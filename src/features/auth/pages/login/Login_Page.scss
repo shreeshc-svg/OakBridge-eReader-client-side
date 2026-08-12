@@ -1,0 +1,27 @@
+@use '../../../../styles/mixins.scss' as mixins;
+
+.login_page {
+     width: 100%;
+     min-height: 100vh;
+     display: flex;
+
+     &__container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          width: 100%;
+          min-height: 100vh;
+
+          @include mixins.respond(tab-port) {
+               grid-template-columns: 1fr;
+          }
+
+          @include mixins.respond(phone) {
+               padding: 0.5rem;
+          }
+
+          &__left_panel {
+               height: 100%;
+               width: 100%;
+          }
+     }
+}

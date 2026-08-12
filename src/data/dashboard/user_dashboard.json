@@ -1,0 +1,263 @@
+{
+     "eyebrow": "Reader board",
+     "title": "Library",
+     "description": "A card board for books in progress, saved sessions, highlights, and reading notes.",
+     "primary_action": "Resume book",
+     "secondary_action": "Browse shelf",
+     "now_reading": [
+          {
+               "title": "Atlas of Quiet Cities",
+               "author": "Annette Black",
+               "chapter": "Chapter 14 · Cartography of Memory",
+               "progress": 57,
+               "gradient_from": "#1a1a4e",
+               "gradient_to": "#4a3f8c",
+               "time_left": "38 min left"
+          },
+          {
+               "title": "Signal Fires",
+               "author": "Jerome Bell",
+               "chapter": "Chapter 8 · The Return",
+               "progress": 34,
+               "gradient_from": "#3d1a00",
+               "gradient_to": "#a0522d",
+               "time_left": "1h 12 min left"
+          },
+          {
+               "title": "Paper Lanterns",
+               "author": "Kristin Watson",
+               "chapter": "Chapter 3 · First Light",
+               "progress": 18,
+               "gradient_from": "#003d2e",
+               "gradient_to": "#2d7a5f",
+               "time_left": "2h 44 min left"
+          },
+          {
+               "title": "The Glass Archive",
+               "author": "Alex Trie",
+               "chapter": "Essay 6 · Urban Silences",
+               "progress": 82,
+               "gradient_from": "#1a0030",
+               "gradient_to": "#6b3fa0",
+               "time_left": "22 min left"
+          }
+     ],
+     "shelves": [
+          {
+               "label": "Reading Queue",
+               "books": [
+                    {
+                         "title": "Northbound Notes",
+                         "author": "M. Adler",
+                         "meta": "Queued",
+                         "color": "#c0664a"
+                    },
+                    {
+                         "title": "Garden Notes",
+                         "author": "S. Patel",
+                         "meta": "Queued",
+                         "color": "#4a7c6f"
+                    },
+                    {
+                         "title": "The Pale Light",
+                         "author": "E. Rowe",
+                         "meta": "Queued",
+                         "color": "#7a5c3a"
+                    },
+                    {
+                         "title": "Harbour's End",
+                         "author": "L. Chao",
+                         "meta": "Queued",
+                         "color": "#3a4a7a"
+                    },
+                    {
+                         "title": "Still Waters",
+                         "author": "A. Nkosi",
+                         "meta": "Queued",
+                         "color": "#6a3a5a"
+                    }
+               ]
+          },
+          {
+               "label": "My Highlights",
+               "books": [
+                    {
+                         "title": "Atlas of Quiet Cities",
+                         "author": "A. Black",
+                         "meta": "12 highlights",
+                         "color": "#4a3f8c"
+                    },
+                    {
+                         "title": "Signal Fires",
+                         "author": "J. Bell",
+                         "meta": "7 highlights",
+                         "color": "#a0522d"
+                    },
+                    {
+                         "title": "The Glass Archive",
+                         "author": "A. Trie",
+                         "meta": "3 highlights",
+                         "color": "#6b3fa0"
+                    }
+               ]
+          },
+          {
+               "label": "Club Picks",
+               "books": [
+                    {
+                         "title": "Paper Lanterns",
+                         "author": "K. Watson",
+                         "meta": "Starts Friday",
+                         "color": "#2d7a5f"
+                    },
+                    {
+                         "title": "Northbound Notes",
+                         "author": "M. Adler",
+                         "meta": "Last month",
+                         "color": "#c0664a"
+                    },
+                    {
+                         "title": "Garden Notes",
+                         "author": "S. Patel",
+                         "meta": "Completed",
+                         "color": "#4a7c6f"
+                    },
+                    {
+                         "title": "Harbour's End",
+                         "author": "L. Chao",
+                         "meta": "Next pick",
+                         "color": "#3a4a7a"
+                    }
+               ]
+          }
+     ],
+     "streak_data": [
+          { "date": "2026-06-01", "minutes": 45 },
+          { "date": "2026-06-02", "minutes": 0 },
+          { "date": "2026-06-03", "minutes": 30 },
+          { "date": "2026-06-04", "minutes": 60 },
+          { "date": "2026-06-05", "minutes": 90 },
+          { "date": "2026-06-06", "minutes": 20 },
+          { "date": "2026-06-07", "minutes": 55 },
+          { "date": "2026-06-08", "minutes": 0 },
+          { "date": "2026-06-09", "minutes": 40 },
+          { "date": "2026-06-10", "minutes": 75 },
+          { "date": "2026-06-11", "minutes": 60 },
+          { "date": "2026-06-12", "minutes": 80 },
+          { "date": "2026-06-13", "minutes": 25 },
+          { "date": "2026-06-14", "minutes": 50 },
+          { "date": "2026-06-15", "minutes": 0 },
+          { "date": "2026-06-16", "minutes": 35 },
+          { "date": "2026-06-17", "minutes": 65 },
+          { "date": "2026-06-18", "minutes": 90 },
+          { "date": "2026-06-19", "minutes": 45 },
+          { "date": "2026-06-20", "minutes": 70 },
+          { "date": "2026-06-21", "minutes": 55 },
+          { "date": "2026-06-22", "minutes": 30 }
+     ],
+     "reading_stats": {
+          "streak_days": 5,
+          "minutes_this_week": 365,
+          "books_finished": 12,
+          "streak_label": "Day streak",
+          "minutes_label": "Min this week",
+          "books_label": "Books finished"
+     },
+     "metrics": [
+          {
+               "label": "New books",
+               "value": "18",
+               "change": "Added this month",
+               "tone": "violet"
+          },
+          {
+               "label": "On progress",
+               "value": "2",
+               "change": "Active sessions",
+               "tone": "amber"
+          },
+          {
+               "label": "Ready to read",
+               "value": "7",
+               "change": "Queued titles",
+               "tone": "green"
+          },
+          {
+               "label": "Archived",
+               "value": "3",
+               "change": "Hidden books",
+               "tone": "ink"
+          }
+     ],
+     "project": {
+          "label": "Featured card",
+          "title": "Atlas of Quiet Cities",
+          "meta": "Chapter 14 · 38 minutes left in session",
+          "progress_label": "Book progress",
+          "progress_value": 57
+     },
+     "activity_title": "Reading queue",
+     "activity_items": [
+          {
+               "label": "Next chapter",
+               "value": "Cartography of Memory",
+               "meta": "Ready"
+          },
+          {
+               "label": "Annotation review",
+               "value": "5 highlights",
+               "meta": "From yesterday"
+          },
+          {
+               "label": "Club pick",
+               "value": "Paper Lanterns",
+               "meta": "Starts Friday"
+          }
+     ],
+     "shelf_title": "Library pulse",
+     "shelf_items": [
+          {
+               "label": "Recent save",
+               "value": "The Glass Archive",
+               "meta": "Essay"
+          },
+          {
+               "label": "Longest read",
+               "value": "Northbound Notes",
+               "meta": "11 sessions"
+          },
+          {
+               "label": "Recommended",
+               "value": "Signal Fires",
+               "meta": "92% match"
+          }
+     ],
+     "cards": [
+          {
+               "owner": "Alex Trie",
+               "reference": "Book #299283",
+               "status": "New",
+               "tone": "violet",
+               "primary_label": "Shelf",
+               "primary_value": "S-01",
+               "secondary_label": "Reading time",
+               "secondary_value": "27 min",
+               "items": [
+                    {
+                         "title": "The Glass Archive",
+                         "meta": "Essay collection",
+                         "quantity": "1x"
+                    },
+                    {
+                         "title": "Garden Notes",
+                         "meta": "Saved highlights",
+                         "quantity": "1x"
+                    }
+               ],
+               "extra_items": "+2 more items",
+               "note_label": "Reader Notes",
+               "note": "Review the chapter on civic maps.",
+               "action_label": "Book details"
+          }
+     ]
+}

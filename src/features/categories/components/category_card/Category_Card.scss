@@ -1,0 +1,298 @@
+@use '../../../../styles/mixins.scss' as mixins;
+@use 'sass:map';
+
+// ── Color token map ───────────────────────────────────────────────────────────
+$colors: (
+     'violet': (bg: rgba(139, 92, 246, 0.08),
+          border: rgba(139, 92, 246, 0.22),
+          icon-bg: rgba(139, 92, 246, 0.14),
+          icon-color: #a78bfa,
+          badge-bg: rgba(139, 92, 246, 0.18),
+          badge-color: #c4b5fd,
+          tag-bg: rgba(139, 92, 246, 0.1),
+          tag-color: #a78bfa,
+     ),
+     'amber': (bg: rgba(245, 158, 11, 0.07),
+          border: rgba(245, 158, 11, 0.2),
+          icon-bg: rgba(245, 158, 11, 0.12),
+          icon-color: #fbbf24,
+          badge-bg: rgba(245, 158, 11, 0.16),
+          badge-color: #fcd34d,
+          tag-bg: rgba(245, 158, 11, 0.1),
+          tag-color: #fbbf24,
+     ),
+     'blue': (bg: rgba(59, 130, 246, 0.07),
+          border: rgba(59, 130, 246, 0.2),
+          icon-bg: rgba(59, 130, 246, 0.12),
+          icon-color: #60a5fa,
+          badge-bg: rgba(59, 130, 246, 0.16),
+          badge-color: #93c5fd,
+          tag-bg: rgba(59, 130, 246, 0.1),
+          tag-color: #60a5fa,
+     ),
+     'rose': (bg: rgba(244, 63, 94, 0.07),
+          border: rgba(244, 63, 94, 0.2),
+          icon-bg: rgba(244, 63, 94, 0.12),
+          icon-color: #fb7185,
+          badge-bg: rgba(244, 63, 94, 0.16),
+          badge-color: #fda4af,
+          tag-bg: rgba(244, 63, 94, 0.1),
+          tag-color: #fb7185,
+     ),
+     'green': (bg: rgba(34, 197, 94, 0.07),
+          border: rgba(34, 197, 94, 0.2),
+          icon-bg: rgba(34, 197, 94, 0.12),
+          icon-color: #4ade80,
+          badge-bg: rgba(34, 197, 94, 0.16),
+          badge-color: #86efac,
+          tag-bg: rgba(34, 197, 94, 0.1),
+          tag-color: #4ade80,
+     ),
+     'pink': (bg: rgba(236, 72, 153, 0.07),
+          border: rgba(236, 72, 153, 0.2),
+          icon-bg: rgba(236, 72, 153, 0.12),
+          icon-color: #f472b6,
+          badge-bg: rgba(236, 72, 153, 0.16),
+          badge-color: #f9a8d4,
+          tag-bg: rgba(236, 72, 153, 0.1),
+          tag-color: #f472b6,
+     ),
+     'indigo': (bg: rgba(99, 102, 241, 0.07),
+          border: rgba(99, 102, 241, 0.2),
+          icon-bg: rgba(99, 102, 241, 0.12),
+          icon-color: #818cf8,
+          badge-bg: rgba(99, 102, 241, 0.16),
+          badge-color: #a5b4fc,
+          tag-bg: rgba(99, 102, 241, 0.1),
+          tag-color: #818cf8,
+     ),
+     'orange': (bg: rgba(249, 115, 22, 0.07),
+          border: rgba(249, 115, 22, 0.2),
+          icon-bg: rgba(249, 115, 22, 0.12),
+          icon-color: #fb923c,
+          badge-bg: rgba(249, 115, 22, 0.16),
+          badge-color: #fdba74,
+          tag-bg: rgba(249, 115, 22, 0.1),
+          tag-color: #fb923c,
+     ),
+     'teal': (bg: rgba(20, 184, 166, 0.07),
+          border: rgba(20, 184, 166, 0.2),
+          icon-bg: rgba(20, 184, 166, 0.12),
+          icon-color: #2dd4bf,
+          badge-bg: rgba(20, 184, 166, 0.16),
+          badge-color: #5eead4,
+          tag-bg: rgba(20, 184, 166, 0.1),
+          tag-color: #2dd4bf,
+     ),
+);
+
+// ── Base card ─────────────────────────────────────────────────────────────────
+
+.category_card {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     gap: 16px;
+     padding: 22px;
+     border: 1px solid rgba(45, 31, 14, 0.08);
+     border-radius: 16px;
+     background-color: #ffffff;
+     backdrop-filter: none;
+     transition:
+          border-color 0.22s ease,
+          transform 0.22s ease,
+          box-shadow 0.22s ease;
+
+     &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 24px rgba(45, 31, 14, 0.06);
+     }
+
+     // ── Featured badge ────────────────────────────────────────────────────
+
+     &__featured_badge {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          padding: 3px 10px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+     }
+
+     // ── Icon ──────────────────────────────────────────────────────────────
+
+     &__icon_wrap {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          flex-shrink: 0;
+
+          svg {
+               width: 24px;
+               height: 24px;
+          }
+     }
+
+     // ── Body ──────────────────────────────────────────────────────────────
+
+     &__body {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          flex: 1;
+     }
+
+     &__name {
+          margin: 0;
+          color: #1c1410;
+          font-size: 17px;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          line-height: 1.25;
+     }
+
+     &__description {
+          margin: 0;
+          color: rgba(45, 31, 14, 0.65);
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 1.6;
+     }
+
+     // ── Tags ─────────────────────────────────────────────────────────────
+
+     &__tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: 4px;
+     }
+
+     &__tag {
+          padding: 3px 10px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+     }
+
+     // ── Footer ────────────────────────────────────────────────────────────
+
+     &__footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 14px;
+          border-top: 1px solid rgba(45, 31, 14, 0.08);
+          gap: 12px;
+     }
+
+     &__stats {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: rgba(45, 31, 14, 0.5);
+          font-size: 12px;
+          font-weight: 500;
+
+          strong {
+               color: #2d1f0e;
+               font-weight: 700;
+          }
+     }
+
+     &__stats_divider {
+          width: 1px;
+          height: 12px;
+          background-color: rgba(45, 31, 14, 0.15);
+     }
+
+     // ── Action buttons ────────────────────────────────────────────────────
+
+     &__actions {
+          display: flex;
+          gap: 6px;
+     }
+
+     &__action_btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: 1px solid rgba(45, 31, 14, 0.1);
+          border-radius: 8px;
+          background-color: rgba(45, 31, 14, 0.02);
+          color: rgba(45, 31, 14, 0.45);
+          transition:
+               background-color 0.18s ease,
+               border-color 0.18s ease,
+               color 0.18s ease;
+
+          svg {
+               width: 14px;
+               height: 14px;
+          }
+
+          &--edit:hover {
+               background-color: rgba(99, 102, 241, 0.15);
+               border-color: rgba(99, 102, 241, 0.4);
+               color: #818cf8;
+          }
+
+          &--upload:hover {
+               background-color: rgba(34, 197, 94, 0.12);
+               border-color: rgba(34, 197, 94, 0.35);
+               color: #4ade80;
+          }
+
+          &--manage:hover {
+               background-color: rgba(245, 158, 11, 0.12);
+               border-color: rgba(245, 158, 11, 0.35);
+               color: #fbbf24;
+          }
+
+          &--delete:hover {
+               background-color: rgba(244, 63, 94, 0.12);
+               border-color: rgba(244, 63, 94, 0.35);
+               color: #fb7185;
+          }
+     }
+}
+
+// ── Per-color theming ─────────────────────────────────────────────────────────
+
+@each $name, $tokens in $colors {
+     .category_card--#{$name} {
+          background-color: map.get($tokens, bg);
+          border-color: map.get($tokens, border);
+
+          &:hover {
+               border-color: map.get($tokens, icon-color);
+               box-shadow:
+                    0 8px 24px map.get($tokens, bg),
+                    0 0 0 1px map.get($tokens, border);
+          }
+
+          .category_card__icon_wrap {
+               background-color: map.get($tokens, icon-bg);
+               color: map.get($tokens, icon-color);
+          }
+
+          .category_card__featured_badge {
+               background-color: map.get($tokens, badge-bg);
+               color: map.get($tokens, badge-color);
+          }
+
+          .category_card__tag {
+               background-color: map.get($tokens, tag-bg);
+               color: map.get($tokens, tag-color);
+          }
+     }
+}

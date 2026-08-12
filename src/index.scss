@@ -1,0 +1,184 @@
+@use 'sass:color';
+@use './styles/mixins.scss' as mixins;
+
+// Base Colors defined from design system
+$primary: #0B0F17; // Deep dark background
+$secondary: #94A3B8; // Muted slate text
+$tertiary: #131A24; // Card backgrounds
+$neutral: #718096;
+$brand: #7C5CFC; // Exponent accent purple
+
+:root {
+     // Primary Palette
+     --color-primary: #{$primary};
+     @for $i from 1 through 9 {
+          --color-primary-#{1000 - ($i * 100)}: #{color.mix(
+                    $primary,
+                    white,
+                    (10 - $i) * 10%
+               )};
+     }
+     --color-primary-50: #{color.mix($primary, white, 5%)};
+
+     // Secondary Palette
+     --color-secondary: #{$secondary};
+     @for $i from 1 through 9 {
+          --color-secondary-#{1000 - ($i * 100)}: #{color.mix(
+                    $secondary,
+                    white,
+                    (10 - $i) * 10%
+               )};
+     }
+     --color-secondary-50: #{color.mix($secondary, white, 5%)};
+
+     // Tertiary Palette
+     --color-tertiary: #{$tertiary};
+     @for $i from 1 through 9 {
+          --color-tertiary-#{1000 - ($i * 100)}: #{color.mix(
+                    $tertiary,
+                    white,
+                    (10 - $i) * 10%
+               )};
+     }
+     --color-tertiary-50: #{color.mix($tertiary, white, 5%)};
+
+     // Neutral Palette
+     --color-neutral: #{$neutral};
+     @for $i from 1 through 9 {
+          --color-neutral-#{1000 - ($i * 100)}: #{color.mix(
+                    $neutral,
+                    white,
+                    (10 - $i) * 10%
+               )};
+     }
+     --color-neutral-50: #{color.mix($neutral, white, 5%)};
+
+     // Brand Palette
+     --color-brand: #{$brand};
+     @for $i from 1 through 9 {
+          --color-brand-#{1000 - ($i * 100)}: #{color.mix(
+                    $brand,
+                    white,
+                    (10 - $i) * 10%
+               )};
+     }
+     --color-brand-50: #{color.mix($brand, white, 5%)};
+}
+
+@font-face {
+     font-family: 'Mona Sans';
+     src: url('./assets/fonts/Mona-Sans-Regular.ttf') format('truetype');
+     font-weight: 400;
+     font-style: normal;
+     font-display: swap;
+}
+
+@font-face {
+     font-family: 'Mona Sans';
+     src: url('./assets/fonts/Mona-Sans-Medium.ttf') format('truetype');
+     font-weight: 500;
+     font-style: normal;
+     font-display: swap;
+}
+
+@font-face {
+     font-family: 'Mona Sans';
+     src: url('./assets/fonts/Mona-Sans-SemiBold.ttf') format('truetype');
+     font-weight: 600;
+     font-style: normal;
+     font-display: swap;
+}
+
+@font-face {
+     font-family: 'Mona Sans';
+     src: url('./assets/fonts/Mona-Sans-Bold.ttf') format('truetype');
+     font-weight: 700;
+     font-style: normal;
+     font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+     outline: none;
+     text-decoration: none;
+     list-style: none;
+}
+
+html,
+body,
+#root {
+     height: 100%;
+     scroll-behavior: smooth;
+     background-color: var(--color-primary);
+     font-family: 'Mona Sans', sans-serif;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+     display: block;
+     max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+     font: inherit;
+}
+
+button {
+     cursor: pointer;
+     border: none;
+     background: none;
+}
+
+.container {
+     width: 100%;
+     max-width: 1200px;
+     margin: auto;
+}
+
+.text-center {
+     text-align: center;
+}
+
+.flex-center {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+// Override all book cards and cover images to have sharp rectangular edges
+.store_hero_card,
+.store_hero_card__cover,
+.store_book_card,
+.store_book_card__cover,
+.store_gallery_card,
+.store_gallery_card__cover,
+.wishlist_card,
+.wishlist_card__cover_wrap,
+.wishlist_card__cover img,
+.ud_shelf__book_cover,
+.ud_hero__cover_wrap,
+.ud_hero__cover_img,
+.ud_expo_cover,
+.ud_expo_book_item_cover,
+.ebooks_card,
+.ebooks_card__cover,
+.ebooks_card__cover img,
+.book_card,
+.book_card__cover,
+.book_card__cover img,
+.manage_category_books_modal__book img,
+.search_modal__book img,
+.book_details_slider__cover img,
+.book_details__cover img {
+     border-radius: 0 !important;
+}

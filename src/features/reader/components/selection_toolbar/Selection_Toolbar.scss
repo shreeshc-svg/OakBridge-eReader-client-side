@@ -1,0 +1,110 @@
+.selection_toolbar {
+     display: flex;
+     align-items: center;
+     background: #111827; // dark popup background matching design
+     border-radius: 9999px; // pill shape
+     padding: 6px 16px;
+     gap: 12px;
+     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+     
+     // Little downward arrow (caret)
+     &::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 6px 6px 0;
+          border-style: solid;
+          border-color: #111827 transparent transparent transparent;
+     }
+
+     &--bottom {
+          &::after {
+               bottom: auto;
+               top: -6px;
+               border-width: 0 6px 6px;
+               border-color: transparent transparent #111827 transparent;
+          }
+     }
+
+     &__colors {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+     }
+
+     &__color_btn {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          border: 2px solid transparent;
+          cursor: pointer;
+          transition: transform 0.15s ease, border-color 0.15s ease;
+
+          &:hover {
+               transform: scale(1.1);
+               border-color: #ffffff;
+          }
+     }
+
+     &__divider {
+          width: 1px;
+          height: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          margin: 0 4px;
+     }
+
+     &__action_btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: none;
+          border: none;
+          color: #f3f4f6;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          padding: 4px 8px;
+          border-radius: 6px;
+          transition: background 0.2s ease;
+
+          svg {
+               width: 16px;
+               height: 16px;
+          }
+
+          &:hover {
+               background: rgba(255, 255, 255, 0.1);
+          }
+     }
+
+     &__note_input {
+          background: transparent;
+          border: none;
+          color: #f3f4f6;
+          font-size: 14px;
+          outline: none;
+          min-width: 200px;
+
+          &::placeholder {
+               color: #9ca3af;
+          }
+     }
+
+     &__save_btn {
+          background: #3b82f6;
+          color: white;
+          border: none;
+          padding: 4px 12px;
+          border-radius: 9999px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s ease;
+
+          &:hover {
+               background: #2563eb;
+          }
+     }
+}

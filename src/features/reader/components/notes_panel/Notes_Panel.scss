@@ -1,0 +1,375 @@
+.notes_panel__backdrop {
+     position: fixed;
+     inset: 0;
+     background: rgba(0, 0, 0, 0.4);
+     z-index: 12000;
+     backdrop-filter: blur(2px);
+     animation: notes_fade_in 0.2s ease;
+}
+
+.notes_panel {
+     position: fixed;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     width: 380px;
+     max-width: 90vw;
+     background: #0f1320;
+     z-index: 12001;
+     display: flex;
+     flex-direction: column;
+     transform: translateX(100%);
+     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+     box-shadow: -8px 0 30px rgba(0, 0, 0, 0.3);
+
+     &--open {
+          transform: translateX(0);
+     }
+
+     &__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 20px 12px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+     }
+
+     &__title {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 17px;
+          font-weight: 700;
+          color: #f3f4f6;
+          margin: 0;
+
+          svg {
+               color: #f59e0b;
+          }
+     }
+
+     &__close_btn {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #9ca3af;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.15s ease;
+
+          &:hover {
+               background: rgba(255, 255, 255, 0.12);
+               color: #f3f4f6;
+          }
+     }
+
+     &__count {
+          padding: 12px 20px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+     }
+
+     &__list {
+          flex: 1;
+          overflow-y: auto;
+          padding: 0 16px 20px;
+
+          &::-webkit-scrollbar {
+               width: 4px;
+          }
+          &::-webkit-scrollbar-thumb {
+               background: rgba(255, 255, 255, 0.1);
+               border-radius: 2px;
+          }
+     }
+
+     &__empty {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 60px 24px;
+          gap: 8px;
+
+          svg {
+               color: #374151;
+               margin-bottom: 8px;
+          }
+
+          p {
+               font-size: 15px;
+               font-weight: 600;
+               color: #6b7280;
+               margin: 0;
+          }
+
+          span {
+               font-size: 13px;
+               color: #4b5563;
+               line-height: 1.5;
+          }
+     }
+
+     &__card {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 12px;
+          padding: 14px 16px;
+          margin-bottom: 10px;
+          cursor: pointer;
+          text-align: left;
+          color: inherit;
+          font-family: inherit;
+          transition: all 0.2s ease;
+
+          &:hover {
+               background: rgba(255, 255, 255, 0.08);
+               border-color: rgba(245, 158, 11, 0.3);
+               transform: translateX(-2px);
+
+               .notes_panel__card_goto {
+                    opacity: 1;
+                    color: #f59e0b;
+               }
+          }
+     }
+
+     &__card_highlight {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+     }
+
+     &__card_color_dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          flex-shrink: 0;
+          margin-top: 5px;
+     }
+
+     &__card_text {
+          font-size: 12px;
+          color: #9ca3af;
+          line-height: 1.5;
+          margin: 0;
+          font-style: italic;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+     }
+
+     &__card_note {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          font-size: 14px;
+          color: #e5e7eb;
+          line-height: 1.5;
+          padding-left: 18px;
+
+          svg {
+               flex-shrink: 0;
+               color: #f59e0b;
+               margin-top: 2px;
+          }
+     }
+
+     &__card_meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 11px;
+          color: #4b5563;
+          padding-left: 18px;
+     }
+
+     &__card_goto {
+          opacity: 0;
+          font-weight: 600;
+          transition: all 0.2s ease;
+     }
+
+     &__card_actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+     }
+
+     &__delete_btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 26px;
+          height: 26px;
+          padding: 0;
+          background: transparent;
+          border: none;
+          border-radius: 6px;
+          color: #64748b;
+          cursor: pointer;
+          opacity: 0;
+          transition: all 0.2s ease;
+
+          &:hover {
+               background: rgba(239, 68, 68, 0.15);
+               color: #ef4444;
+          }
+     }
+
+     &__card:hover &__card_goto,
+     &__card:hover &__delete_btn {
+          opacity: 1;
+     }
+}
+
+@keyframes notes_fade_in {
+     from { opacity: 0; }
+     to { opacity: 1; }
+}
+
+// Theme integration
+.reader_page[data-theme='light'] {
+     .notes_panel {
+          background: #ffffff;
+          border-left: 1px solid rgba(15, 23, 42, 0.08);
+          box-shadow: -8px 0 30px rgba(15, 23, 42, 0.05);
+
+          &__header {
+               border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+          }
+
+          &__title {
+               color: #0f172a;
+          }
+
+          &__close_btn {
+               background: #f1f5f9;
+               border-color: rgba(15, 23, 42, 0.08);
+               color: #64748b;
+
+               &:hover {
+                    background: #e2e8f0;
+                    color: #0f172a;
+               }
+          }
+
+          &__count {
+               color: #64748b;
+          }
+
+          &__list {
+               &::-webkit-scrollbar-thumb {
+                    background: rgba(15, 23, 42, 0.1);
+               }
+          }
+
+          &__empty {
+               svg { color: #cbd5e1; }
+               p { color: #64748b; }
+               span { color: #94a3b8; }
+          }
+
+          &__card {
+               background: #f8fafc;
+               border-color: #e2e8f0;
+
+               &:hover {
+                    background: #f1f5f9;
+                    border-color: rgba(245, 158, 11, 0.3);
+               }
+          }
+
+          &__card_text {
+               color: #64748b;
+          }
+
+          &__card_note {
+               color: #334155;
+          }
+
+          &__card_meta {
+               color: #94a3b8;
+          }
+     }
+}
+
+.reader_page[data-theme='sepia'] {
+     .notes_panel {
+          background: #f4ecd8;
+          border-left: 1px solid rgba(91, 70, 54, 0.15);
+          box-shadow: -8px 0 30px rgba(91, 70, 54, 0.06);
+
+          &__header {
+               border-bottom: 1px solid rgba(91, 70, 54, 0.12);
+          }
+
+          &__title {
+               color: #271e17;
+               svg { color: #8b6e56; }
+          }
+
+          &__close_btn {
+               background: #eae0c9;
+               border-color: rgba(91, 70, 54, 0.15);
+               color: #7c624d;
+
+               &:hover {
+                    background: #ebdcb9;
+                    color: #271e17;
+               }
+          }
+
+          &__count {
+               color: #7c624d;
+          }
+
+          &__list {
+               &::-webkit-scrollbar-thumb {
+                    background: rgba(91, 70, 54, 0.15);
+               }
+          }
+
+          &__empty {
+               svg { color: #c0b295; }
+               p { color: #7c624d; }
+               span { color: #8c725c; }
+          }
+
+          &__card {
+               background: #eae0c9;
+               border-color: rgba(91, 70, 54, 0.12);
+
+               &:hover {
+                    background: #ebdcb9;
+                    border-color: rgba(245, 158, 11, 0.3);
+               }
+          }
+
+          &__card_text {
+               color: #7c624d;
+          }
+
+          &__card_note {
+               color: #5b4636;
+          }
+
+          &__card_meta {
+               color: #8c725c;
+          }
+     }
+}

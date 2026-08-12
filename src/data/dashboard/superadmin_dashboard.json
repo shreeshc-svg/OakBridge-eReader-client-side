@@ -1,0 +1,234 @@
+{
+     "eyebrow": "Superadmin board",
+     "title": "Manuscripts",
+     "description": "A production board for drafts, editorial passes, reader reviews, and publishing readiness.",
+     "primary_action": "New manuscript",
+     "secondary_action": "Export report",
+     "featured_manuscript": {
+          "title": "The Glass Archive",
+          "subtitle": "A long-form essay collection on urban memory",
+          "edit_pass": "Editing pass 2 of 4",
+          "reviewer_notes": 12,
+          "word_count": "48,320",
+          "launch_readiness": 68
+     },
+     "writing_goal": {
+          "label": "Today's goal",
+          "current": 1240,
+          "target": 2000,
+          "unit": "words"
+     },
+     "pipeline": [
+          {
+               "status": "New",
+               "count": 18,
+               "sub_label": "Needs triage",
+               "tone": "violet",
+               "progress": 22
+          },
+          {
+               "status": "In editorial",
+               "count": 2,
+               "sub_label": "Active rounds",
+               "tone": "amber",
+               "progress": 55
+          },
+          {
+               "status": "Ready to publish",
+               "count": 7,
+               "sub_label": "Launch-ready titles",
+               "tone": "green",
+               "progress": 85
+          },
+          {
+               "status": "Cancelled",
+               "count": 3,
+               "sub_label": "Paused campaigns",
+               "tone": "ink",
+               "progress": 10
+          }
+     ],
+     "revenue_chart": [
+          { "month": "Jan", "value": 820 },
+          { "month": "Feb", "value": 1340 },
+          { "month": "Mar", "value": 960 },
+          { "month": "Apr", "value": 1780 },
+          { "month": "May", "value": 2240 },
+          { "month": "Jun", "value": 1960 }
+     ],
+     "activity_title": "Priority queue",
+     "activity_items": [
+          {
+               "label": "Cover proof",
+               "value": "Designer handoff",
+               "meta": "Due today"
+          },
+          {
+               "label": "Beta notes",
+               "value": "8 comments need replies",
+               "meta": "High impact"
+          },
+          {
+               "label": "Pricing test",
+               "value": "Bundle offer review",
+               "meta": "2 days left"
+          }
+     ],
+     "shelf_title": "Shelf pulse",
+     "shelf_items": [
+          {
+               "label": "Most opened",
+               "value": "Atlas of Quiet Cities",
+               "meta": "7.2k reads"
+          },
+          {
+               "label": "Fastest riser",
+               "value": "Paper Lanterns",
+               "meta": "+31% saves"
+          },
+          {
+               "label": "Needs attention",
+               "value": "Northbound Notes",
+               "meta": "Rating dip"
+          }
+     ],
+     "metrics": [
+          {
+               "label": "New reviews",
+               "value": "18",
+               "change": "Needs triage",
+               "tone": "violet"
+          },
+          {
+               "label": "In editorial",
+               "value": "2",
+               "change": "Active rounds",
+               "tone": "amber"
+          },
+          {
+               "label": "Ready to publish",
+               "value": "7",
+               "change": "Launch-ready titles",
+               "tone": "green"
+          },
+          {
+               "label": "Cancelled",
+               "value": "3",
+               "change": "Paused campaigns",
+               "tone": "ink"
+          }
+     ],
+     "project": {
+          "label": "Featured manuscript",
+          "title": "The Glass Archive",
+          "meta": "Editing pass 2 of 4 · 12 reviewer notes open",
+          "progress_label": "Launch readiness",
+          "progress_value": 68
+     },
+     "cards": [
+          {
+               "owner": "Alex Trie",
+               "reference": "Draft #299283",
+               "status": "New",
+               "tone": "violet",
+               "primary_label": "Section",
+               "primary_value": "S-01",
+               "secondary_label": "Proj. revenue",
+               "secondary_value": "$27.50",
+               "items": [
+                    {
+                         "title": "The Glass Archive",
+                         "meta": "Launch essay",
+                         "quantity": "1x"
+                    },
+                    {
+                         "title": "Garden Notes",
+                         "meta": "Reader note pack",
+                         "quantity": "1x"
+                    }
+               ],
+               "extra_items": "+2 more items",
+               "note_label": "Editorial Notes",
+               "note": "Confirm chapter order before final layout.",
+               "action_label": "Draft details"
+          },
+          {
+               "owner": "Jerome Bell",
+               "reference": "Draft #299265",
+               "status": "In editorial",
+               "tone": "amber",
+               "primary_label": "Section",
+               "primary_value": "D-08",
+               "secondary_label": "Proj. revenue",
+               "secondary_value": "$31.00",
+               "items": [
+                    {
+                         "title": "Signal Fires",
+                         "meta": "Chapter rewrite",
+                         "quantity": "1x"
+                    },
+                    {
+                         "title": "Northbound Notes",
+                         "meta": "Line edit pass",
+                         "quantity": "1x"
+                    }
+               ],
+               "extra_items": "+2 more items",
+               "note_label": "Editorial Notes",
+               "note": "Return to the marked paragraph in chapter 6.",
+               "action_label": "Draft details"
+          },
+          {
+               "owner": "Annette Black",
+               "reference": "Draft #299222",
+               "status": "Ready to publish",
+               "tone": "green",
+               "primary_label": "Section",
+               "primary_value": "S-22",
+               "secondary_label": "Proj. revenue",
+               "secondary_value": "$36.50",
+               "items": [
+                    {
+                         "title": "Paper Lanterns",
+                         "meta": "Final proof complete",
+                         "quantity": "1x"
+                    },
+                    {
+                         "title": "Atlas of Quiet Cities",
+                         "meta": "Launch excerpt ready",
+                         "quantity": "1x"
+                    }
+               ],
+               "extra_items": "+3 more items",
+               "note_label": "Editorial Notes",
+               "note": "Mild formatting adjustments pending.",
+               "action_label": "Draft details"
+          },
+          {
+               "owner": "Kristin Watson",
+               "reference": "Draft #291234",
+               "status": "Ready to publish",
+               "tone": "green",
+               "primary_label": "Section",
+               "primary_value": "B-11",
+               "secondary_label": "Proj. revenue",
+               "secondary_value": "$42.00",
+               "items": [
+                    {
+                         "title": "Atlas of Quiet Cities",
+                         "meta": "Metadata review",
+                         "quantity": "1x"
+                    },
+                    {
+                         "title": "Paper Lanterns",
+                         "meta": "Cover upload",
+                         "quantity": "1x"
+                    }
+               ],
+               "extra_items": "+1 more item",
+               "note_label": "Editorial Notes",
+               "note": "Confirm final subtitle before release.",
+               "action_label": "Draft details"
+          }
+     ]
+}

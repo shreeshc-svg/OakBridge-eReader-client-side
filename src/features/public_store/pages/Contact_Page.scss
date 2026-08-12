@@ -1,0 +1,314 @@
+$brand: #ff7a36;
+$brand-light: #ff9a62;
+$brand-dark: #e06520;
+$surface-1: #f4f6f8;
+$surface-2: #ffffff;
+$surface-3: #e2e8f0;
+$text-1: #000000;
+$text-2: #475569;
+$text-3: #64748b;
+$border: #e2e8f0;
+
+@use '../../../styles/mixins.scss' as mixins;
+
+.contact_page {
+     min-height: 100vh;
+     background-color: $surface-1;
+     color: $text-1;
+     display: flex;
+     flex-direction: column;
+}
+
+.contact_layout {
+     max-width: 1200px;
+     margin: 0 auto;
+     width: 100%;
+     padding: 40px 24px 80px;
+     display: flex;
+     flex-direction: column;
+     gap: 40px;
+}
+
+.contact_header {
+     text-align: center;
+     max-width: 700px;
+     margin: 0 auto;
+
+     &__title {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: #0f223f; // Navy Blue
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+     }
+
+     &__subtitle {
+          font-size: 1.1rem;
+          color: $text-2;
+          line-height: 1.6;
+     }
+}
+
+.contact_grid {
+     display: grid;
+     grid-template-columns: 1fr;
+     gap: 40px;
+
+     @media (min-width: 900px) {
+          grid-template-columns: 4.5fr 7.5fr;
+     }
+}
+
+.contact_info {
+     display: flex;
+     flex-direction: column;
+     gap: 24px;
+
+     &__card {
+          background: #0f223f;
+          color: white;
+          padding: 32px;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+     }
+
+     &__title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 24px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          padding-bottom: 12px;
+     }
+
+     &__item {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 24px;
+
+          &:last-child {
+               margin-bottom: 0;
+          }
+     }
+
+     &__icon {
+          flex-shrink: 0;
+          width: 40px;
+          height: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fbbf24; // Warm yellow/amber icon color
+
+          svg {
+               width: 20px;
+               height: 20px;
+          }
+     }
+
+     &__text {
+          h3 {
+               margin: 0 0 6px;
+               font-size: 0.95rem;
+               font-weight: 700;
+               text-transform: uppercase;
+               letter-spacing: 0.5px;
+               color: rgba(255, 255, 255, 0.6);
+          }
+
+          p {
+               margin: 0;
+               font-size: 0.95rem;
+               line-height: 1.5;
+               color: rgba(255, 255, 255, 0.9);
+
+               a {
+                    color: #60a5fa;
+                    text-decoration: none;
+
+                    &:hover {
+                         text-decoration: underline;
+                    }
+               }
+          }
+     }
+}
+
+.contact_map_mockup {
+     background: white;
+     padding: 16px;
+     border-radius: 16px;
+     border: 1px solid $border;
+     box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+
+     &__title {
+          font-weight: 700;
+          font-size: 0.9rem;
+          color: #0f223f;
+          margin-bottom: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+     }
+
+     &__frame {
+          height: 220px;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #e2e8f0;
+     }
+}
+
+.contact_form_container {
+     background: white;
+     padding: 40px;
+     border-radius: 16px;
+     border: 1px solid $border;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.contact_form {
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+
+     &__title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #0f223f;
+          margin-bottom: 8px;
+     }
+
+     &__row {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+
+          @media (min-width: 600px) {
+               flex-direction: row;
+          }
+     }
+
+     &__group {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+     }
+
+     &__label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: $text-2;
+     }
+
+     &__input,
+     &__textarea {
+          padding: 12px 16px;
+          border-radius: 8px;
+          border: 1px solid $border;
+          font-size: 0.95rem;
+          outline: none;
+          transition: all 0.2s ease;
+          background: #f8fafc;
+          color: $text-1;
+
+          &:focus {
+               border-color: #3b82f6;
+               background: white;
+               box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+          }
+     }
+
+     &__textarea {
+          resize: vertical;
+     }
+
+     &__submit {
+          align-self: flex-start;
+          background: #3b82f6;
+          color: white;
+          font-weight: 600;
+          padding: 14px 32px;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+
+          &:hover {
+               background: #2563eb;
+               transform: translateY(-1px);
+               box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+          }
+
+          &:active {
+               transform: translateY(0);
+          }
+
+          &:disabled {
+               background: #94a3b8;
+               cursor: not-allowed;
+               box-shadow: none;
+               transform: none;
+          }
+     }
+}
+
+.contact_success {
+     text-align: center;
+     padding: 40px 20px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+
+     &__icon {
+          width: 64px;
+          height: 64px;
+          background: #ecfdf5;
+          color: #10b981;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 24px;
+
+          svg {
+               width: 32px;
+               height: 32px;
+          }
+     }
+
+     &__title {
+          font-size: 1.75rem;
+          font-weight: 800;
+          color: #0f223f;
+          margin-bottom: 12px;
+     }
+
+     &__msg {
+          font-size: 1.05rem;
+          color: $text-2;
+          line-height: 1.6;
+          max-width: 480px;
+          margin: 0 auto 32px;
+     }
+
+     &__btn {
+          background: #0f223f;
+          color: white;
+          font-weight: 600;
+          padding: 12px 24px;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+          font-size: 0.95rem;
+          transition: all 0.2s;
+
+          &:hover {
+               background: #1e3a5f;
+          }
+     }
+}

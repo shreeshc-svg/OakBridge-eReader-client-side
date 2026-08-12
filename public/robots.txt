@@ -1,0 +1,24 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+
+# Allow search engine crawlers to access the public storefront, books, subscriptions, and info
+Allow: /$
+Allow: /subscription$
+Allow: /contact$
+Allow: /login$
+Allow: /signup$
+Allow: /reset-password$
+Allow: /book/
+
+# Disallow indexing of private dashboards, protected reader views, profile settings, and checkout steps
+Disallow: /superadmin/dashboard
+Disallow: /user/dashboard
+Disallow: /user/purchases
+Disallow: /institution/dashboard
+Disallow: /reader/
+Disallow: /cart
+Disallow: /wishlist
+Disallow: /settings/
+
+# Link to sitemap.xml
+Sitemap: https://ebooks.oakbridge.in/sitemap.xml

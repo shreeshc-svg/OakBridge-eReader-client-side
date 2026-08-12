@@ -1,0 +1,72 @@
+{
+     "login": {
+          "login_left_panel": {
+               "image_url": "/ereader_login.png"
+          },
+
+          "login_right_panel": {
+               "logo_text": "Oakbridge E-Reader",
+               "title": "Hey, Welcome Back 👋",
+               "sub_title": "Please enter your details",
+               "form": {
+                    "email_placeholder": "Email address",
+                    "password_placeholder": "Password",
+                    "forgot_password_text": "Forgot password?",
+                    "login_button_text": "Login",
+                    "loading_button_text": "Logging in..."
+               },
+               "divider_text": "Or Login with",
+               "social_buttons": {
+                    "google_text": "Google",
+                    "facebook_text": "Facebook"
+               },
+               "footer": {
+                    "text": "Don't have an account?",
+                    "link_text": "Signup"
+               },
+               "messages": {
+                    "login_success": "Login successful!",
+                    "login_failed": "Login failed. Please check your credentials."
+               }
+          }
+     },
+     "signup": {
+          "signup_left_panel": {
+               "image_url": "/ereader_login.png"
+          },
+          "signup_right_panel": {
+               "logo_text": "Oakbridge E-Reader",
+               "title": "Create an Account ✨",
+               "sub_title": "Please fill in your details to sign up",
+               "form": {
+                    "username_placeholder": "Username",
+                    "email_placeholder": "Email address",
+                    "password_placeholder": "Password",
+                    "role_label": "Select Role",
+                    "otp_placeholder": "Enter OTP",
+                    "send_otp_button_text": "Send OTP",
+                    "sending_otp_button_text": "Sending...",
+                    "verify_otp_button_text": "Verify OTP",
+                    "next_button_text": "Next",
+                    "back_button_text": "Back",
+                    "signup_button_text": "Sign Up",
+                    "loading_button_text": "Signing up..."
+               },
+               "divider_text": "Or Sign Up with",
+               "social_buttons": {
+                    "google_text": "Google",
+                    "facebook_text": "Facebook"
+               },
+               "footer": {
+                    "text": "Already have an account?",
+                    "link_text": "Login"
+               },
+               "messages": {
+                    "otp_sent_success": "OTP sent to your email!",
+                    "otp_sent_failed": "Failed to send OTP. Please try again.",
+                    "signup_success": "Account created successfully!",
+                    "signup_failed": "Registration failed. Please check your details."
+               }
+          }
+     }
+}

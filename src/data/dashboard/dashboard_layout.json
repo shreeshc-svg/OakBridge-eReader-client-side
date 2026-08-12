@@ -1,0 +1,160 @@
+{
+     "superadmin_navbar": {
+          "brand_mark": "O",
+          "brand_name": "Oakbridge",
+          "search_placeholder": "Search books",
+          "nav_items": [
+               "Dashboard",
+               "Categories",
+               "Banners",
+               "Reviews",
+               "Admins",
+               "Managers",
+               "Analytics"
+          ],
+          "active_item": "Dashboard"
+     },
+     "user_navbar": {
+          "brand_mark": "O",
+          "brand_name": "Oakbridge",
+          "search_placeholder": "Search your library",
+          "nav_items": [
+               "Bookstore",
+               "My Library",
+               "Contact Us"
+          ],
+          "active_item": "My Library"
+     },
+     "logout": {
+          "idle_label": "Logout",
+          "pending_label": "Logging out...",
+          "error_fallback": "Logout failed"
+     },
+     "sidebar": {
+          "superadmin": {
+               "label": "Superadmin Studio",
+               "sections": [
+                    {
+                         "title": "Workspace",
+                         "items": [
+                              {
+                                   "label": "Overview",
+                                   "path": "/superadmin/dashboard",
+                                   "icon": "dashboard"
+                              },
+                              {
+                                   "label": "My Drafts",
+                                   "path": "/superadmin/drafts",
+                                   "icon": "drafts"
+                              },
+                              {
+                                   "label": "New Manuscript",
+                                   "path": "/superadmin/books/new",
+                                   "icon": "add"
+                              }
+                         ]
+                    },
+                    {
+                         "title": "Production",
+                         "items": [
+                              {
+                                   "label": "Reader Reviews",
+                                   "path": "/superadmin/reviews",
+                                   "icon": "reviews"
+                              },
+                              {
+                                   "label": "Analytics",
+                                   "path": "/superadmin/analytics",
+                                   "icon": "analytics"
+                              },
+                              {
+                                   "label": "Earnings",
+                                   "path": "/superadmin/earnings",
+                                   "icon": "earnings"
+                              }
+                         ]
+                    },
+                    {
+                         "title": "Account",
+                         "items": [
+                              {
+                                   "label": "My Books",
+                                   "path": "/superadmin/books",
+                                   "icon": "books"
+                              },
+                              {
+                                   "label": "Settings",
+                                   "path": "/superadmin/settings",
+                                   "icon": "settings"
+                              }
+                         ]
+                    }
+               ]
+          },
+          "user": {
+               "label": "My Library",
+               "sections": [
+                    {
+                         "title": "Reading",
+                         "items": [
+                              {
+                                   "label": "Dashboard",
+                                   "path": "/user/dashboard",
+                                   "icon": "dashboard"
+                              },
+                              {
+                                   "label": "Now Reading",
+                                   "path": "/user/reading",
+                                   "icon": "reading"
+                              },
+                              {
+                                   "label": "Discover",
+                                   "path": "/user/discover",
+                                   "icon": "discover"
+                              }
+                         ]
+                    },
+                    {
+                         "title": "My Collection",
+                         "items": [
+                              {
+                                   "label": "Library",
+                                   "path": "/user/library",
+                                   "icon": "books"
+                              },
+                              {
+                                   "label": "Bookmarks",
+                                   "path": "/user/bookmarks",
+                                   "icon": "bookmark"
+                              },
+                              {
+                                   "label": "Notes",
+                                   "path": "/user/notes",
+                                   "icon": "notes"
+                              },
+                              {
+                                   "label": "History",
+                                   "path": "/user/history",
+                                   "icon": "history"
+                              }
+                         ]
+                    },
+                    {
+                         "title": "Account",
+                         "items": [
+                              {
+                                   "label": "Reading List",
+                                   "path": "/user/reading-list",
+                                   "icon": "reading"
+                              },
+                              {
+                                   "label": "Settings",
+                                   "path": "/user/settings",
+                                   "icon": "settings"
+                              }
+                         ]
+                    }
+               ]
+          }
+     }
+}

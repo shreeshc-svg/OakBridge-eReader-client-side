@@ -1,0 +1,117 @@
+{
+     "page_title": "Categories",
+     "page_description": "Browse and manage content categories across the Oakbridge library.",
+     "add_button_label": "Add Category",
+     "search_placeholder": "Search categories…",
+     "empty_label": "No categories found",
+     "categories": [
+          {
+               "id": "cat-001",
+               "name": "Fiction",
+               "slug": "fiction",
+               "description": "Imaginative narratives exploring the full spectrum of human experience through invented stories and characters.",
+               "color": "violet",
+               "icon": "fiction",
+               "book_count": 142,
+               "author_count": 38,
+               "featured": true,
+               "tags": ["Novel", "Short story", "Literary"]
+          },
+          {
+               "id": "cat-002",
+               "name": "Non-Fiction",
+               "slug": "non-fiction",
+               "description": "Fact-based works covering real events, people, and ideas across history, science, and culture.",
+               "color": "amber",
+               "icon": "non-fiction",
+               "book_count": 98,
+               "author_count": 27,
+               "featured": true,
+               "tags": ["Biography", "History", "Essay"]
+          },
+          {
+               "id": "cat-003",
+               "name": "Science & Technology",
+               "slug": "science-technology",
+               "description": "Cutting-edge explorations of scientific discovery, engineering innovation, and the digital frontier.",
+               "color": "blue",
+               "icon": "science",
+               "book_count": 74,
+               "author_count": 19,
+               "featured": false,
+               "tags": ["Physics", "AI", "Engineering"]
+          },
+          {
+               "id": "cat-004",
+               "name": "Mystery & Thriller",
+               "slug": "mystery-thriller",
+               "description": "Heart-pounding tales of suspense, detective work, and psychological tension that keep readers guessing.",
+               "color": "rose",
+               "icon": "mystery",
+               "book_count": 87,
+               "author_count": 23,
+               "featured": true,
+               "tags": ["Crime", "Suspense", "Detective"]
+          },
+          {
+               "id": "cat-005",
+               "name": "Self-Help",
+               "slug": "self-help",
+               "description": "Practical guidance for personal growth, productivity, mental wellness, and building a fulfilling life.",
+               "color": "green",
+               "icon": "self-help",
+               "book_count": 55,
+               "author_count": 14,
+               "featured": false,
+               "tags": ["Wellness", "Mindset", "Productivity"]
+          },
+          {
+               "id": "cat-006",
+               "name": "Romance",
+               "slug": "romance",
+               "description": "Stories of love, longing, and human connection across every era and setting imaginable.",
+               "color": "pink",
+               "icon": "romance",
+               "book_count": 113,
+               "author_count": 31,
+               "featured": false,
+               "tags": ["Contemporary", "Historical", "Paranormal"]
+          },
+          {
+               "id": "cat-007",
+               "name": "Fantasy & Sci-Fi",
+               "slug": "fantasy-scifi",
+               "description": "Epic world-building and speculative ideas that stretch the boundaries of reality and imagination.",
+               "color": "indigo",
+               "icon": "fantasy",
+               "book_count": 129,
+               "author_count": 34,
+               "featured": true,
+               "tags": ["Epic", "Space Opera", "Urban Fantasy"]
+          },
+          {
+               "id": "cat-008",
+               "name": "Children's Literature",
+               "slug": "childrens",
+               "description": "Engaging and age-appropriate stories designed to inspire young minds and foster a love of reading.",
+               "color": "orange",
+               "icon": "children",
+               "book_count": 66,
+               "author_count": 18,
+               "featured": false,
+               "tags": ["Picture Book", "Middle Grade", "YA"]
+          },
+          {
+               "id": "cat-009",
+               "name": "Biography & Memoir",
+               "slug": "biography-memoir",
+               "description": "Real life stories of extraordinary individuals, told from personal experience or in-depth research.",
+               "color": "teal",
+               "icon": "biography",
+               "book_count": 43,
+               "author_count": 11,
+               "featured": false,
+               "tags": ["Memoir", "Autobiography", "Profile"]
+          }
+     ]
+}

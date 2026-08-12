@@ -1,0 +1,248 @@
+@use '../../../styles/mixins.scss' as mixins;
+
+.store_banner_slider {
+     position: relative;
+     width: 100%;
+     height: auto;
+     aspect-ratio: 1920 / 500; // Matches standard banner ratio (3.84:1)
+     background: #0f172a;
+     overflow: hidden;
+     box-sizing: border-box;
+
+     &__slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 0.8s ease-in-out;
+          z-index: 1;
+
+          &--active {
+               opacity: 1;
+               z-index: 2;
+          }
+     }
+
+     &__bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 1;
+     }
+
+     &__overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          background: linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, rgba(15, 23, 42, 0.35) 100%);
+     }
+
+     &__content {
+          position: relative;
+          z-index: 3;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 0 40px;
+          max-width: 1280px;
+          margin: 0 auto;
+          box-sizing: border-box;
+
+          @include mixins.respond(tab-port) {
+               padding: 0 20px;
+          }
+     }
+
+     &__eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.15);
+          padding: 6px 12px;
+          border-radius: 100px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: white;
+          margin-bottom: 24px;
+          width: fit-content;
+
+          @include mixins.respond(tab-port) {
+               margin-bottom: 12px;
+               padding: 4px 8px;
+               font-size: 0.6rem;
+          }
+     }
+
+     &__eyebrow_dot {
+          width: 6px;
+          height: 6px;
+          background: #4ade80;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #4ade80;
+
+          @include mixins.respond(tab-port) {
+               width: 4px;
+               height: 4px;
+          }
+     }
+
+     &__title {
+          font-size: 3.5rem;
+          font-weight: 800;
+          line-height: 1.1;
+          color: white;
+          margin-bottom: 32px;
+          max-width: 600px;
+
+          @include mixins.respond(tab-port) {
+               font-size: 1.75rem;
+               margin-bottom: 16px;
+               max-width: 400px;
+          }
+     }
+
+     &__actions {
+          display: flex;
+          gap: 16px;
+     }
+
+     &__btn {
+          display: inline-flex;
+          align-items: center;
+          padding: 12px 32px;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: none;
+          text-decoration: none;
+
+          @include mixins.respond(tab-port) {
+               padding: 8px 16px;
+               font-size: 0.75rem;
+               border-radius: 6px;
+          }
+
+          &--primary {
+               background: #3b82f6;
+               color: white;
+
+               &:hover {
+                    background: #2563eb;
+               }
+          }
+     }
+
+     &__dots {
+          position: absolute;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 10;
+          display: flex;
+          gap: 12px;
+
+          @include mixins.respond(tab-port) {
+               bottom: 12px;
+               gap: 8px;
+          }
+     }
+
+     &__dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.4);
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          padding: 0;
+
+          @include mixins.respond(tab-port) {
+               width: 6px;
+               height: 6px;
+          }
+
+          &:hover {
+               background: rgba(255, 255, 255, 0.8);
+          }
+
+          &--active {
+               background: white;
+               width: 24px;
+               border-radius: 4px;
+
+               @include mixins.respond(tab-port) {
+                    width: 16px;
+               }
+          }
+     }
+}
+
+// ── Mobile Responsiveness (< 768px) ──────────────────────────────────────────
+
+@media (max-width: 768px) {
+     .store_banner_slider {
+          aspect-ratio: 1920 / 500; // Perfect 3.84:1 natural banner aspect ratio (0 top/bottom gaps!)
+          width: 100%;
+          height: auto;
+          min-height: auto;
+          max-height: none;
+          background: #0f172a;
+
+          &__bg {
+               width: 100%;
+               height: 100%;
+               object-fit: cover;
+          }
+
+          &__overlay {
+               display: none;
+          }
+
+          &__content {
+               padding: 6px 12px;
+          }
+
+          &__eyebrow {
+               font-size: 0.55rem;
+               padding: 2px 6px;
+               margin-bottom: 4px;
+          }
+
+          &__title {
+               font-size: 0.95rem;
+               line-height: 1.15;
+               margin-bottom: 6px;
+          }
+
+          &__actions {
+               flex-direction: row;
+               gap: 6px;
+
+               .store_banner_slider__btn {
+                    width: auto;
+                    padding: 4px 10px;
+                    font-size: 0.7rem;
+               }
+          }
+
+          &__dots {
+               bottom: 4px;
+               gap: 4px;
+          }
+
+          &__dot {
+               width: 4px;
+               height: 4px;
+
+               &--active {
+                    width: 12px;
+               }
+          }
+     }
+}

@@ -1,0 +1,117 @@
+@use '../styles/mixins.scss' as mixins;
+
+.dashboard_layout {
+     width: 100%;
+     min-height: 100vh;
+     overflow-x: hidden;
+
+     // ── Role-specific backgrounds ──────────────────────────────────────────
+     &--author {
+          background: #f5f3ef; // warm parchment-adjacent
+
+          .dashboard_layout__shell {
+               background: #f0ede8;
+          }
+
+          .dashboard_layout__top {
+               background: linear-gradient(112deg,
+                         #1c1410 0%,
+                         #2d1f0e 45%,
+                         #1a110a 100%);
+          }
+     }
+
+     &--user {
+          background: #ffffff;
+
+          .dashboard_layout__shell {
+               background: transparent;
+               color: #0f172a;
+          }
+
+          .dashboard_layout__top {
+               background: transparent;
+          }
+     }
+
+     // Default (fallback / superadmin)
+     &:not(&--author):not(&--user) {
+          background: #eef0ed;
+
+          .dashboard_layout__shell {
+               background: #f3f4f2;
+          }
+
+          .dashboard_layout__top {
+               background:
+                    linear-gradient(108deg,
+                         rgba(7, 12, 28, 0.97) 0%,
+                         rgba(14, 20, 40, 0.97) 52%,
+                         rgba(4, 9, 22, 0.99) 100%),
+                    #060e20;
+          }
+     }
+
+     @include mixins.respond(phone) {
+          padding: 0;
+     }
+
+     &__shell {
+          width: 100%;
+          min-height: 100vh;
+          overflow: hidden;
+
+          @include mixins.respond(phone) {
+               min-height: 100vh;
+               border-radius: 0;
+          }
+     }
+
+     // The "top" zone covers the navbar + optional header slot
+     &__top {
+          position: relative;
+          z-index: 50;
+          overflow: visible;
+
+          @include mixins.respond(phone) {
+               border-radius: 0;
+          }
+     }
+
+     &__header_slot {
+          padding: 0 32px 24px;
+
+          @include mixins.respond(tab-port) {
+               padding: 0 20px 18px;
+          }
+
+          @include mixins.respond(phone) {
+               padding: 0 14px 14px;
+          }
+     }
+
+     &__body {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 20px 24px 28px;
+
+          @include mixins.respond(tab-port) {
+               grid-template-columns: 1fr;
+               padding: 18px;
+          }
+
+          @include mixins.respond(phone) {
+               width: 100%;
+               max-width: 100vw;
+               padding: 12px;
+          }
+     }
+
+     &__content {
+          width: 100%;
+          min-width: 0;
+          max-width: 100%;
+          color: var(--color-primary, #1a1a1a);
+     }
+}

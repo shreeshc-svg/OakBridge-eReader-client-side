@@ -1,0 +1,221 @@
+@use '../../../../styles/mixins.scss' as mixins;
+
+// ── Base sidebar ─────────────────────────────────────────────────────────────
+
+.dashboard_sidebar {
+     align-self: start;
+     min-height: 0;
+     padding: 20px 16px 24px;
+     border-radius: 14px;
+     background-color: #ffffff;
+     border: 1px solid rgba(16, 24, 40, 0.07);
+     box-shadow:
+          0 1px 3px rgba(15, 23, 42, 0.05),
+          0 8px 24px rgba(15, 23, 42, 0.06);
+
+     @include mixins.respond(tab-port) {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 30;
+          width: min(82vw, 280px);
+          transform: translateX(-100%);
+          transition: transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 0 14px 14px 0;
+          overflow-y: auto;
+          padding-top: 28px;
+     }
+
+     &.is_open {
+          @include mixins.respond(tab-port) {
+               transform: translateX(0);
+          }
+     }
+
+     &__backdrop {
+          display: none;
+
+          @include mixins.respond(tab-port) {
+               position: fixed;
+               inset: 0;
+               z-index: 25;
+               display: block;
+               pointer-events: none;
+               background-color: rgba(15, 23, 42, 0);
+               transition: background-color 0.24s ease;
+          }
+
+          &.is_open {
+               @include mixins.respond(tab-port) {
+                    pointer-events: auto;
+                    background-color: rgba(15, 23, 42, 0.4);
+               }
+          }
+     }
+
+     &__header {
+          margin-bottom: 20px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #f1f5f9;
+     }
+
+     &__brand {
+          display: block;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: #94a3b8;
+     }
+
+     &__nav {
+          display: flex;
+          flex-direction: column;
+          gap: 22px;
+     }
+
+     &__section {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+     }
+
+     &__section_title {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #cbd5e1;
+          margin-bottom: 6px;
+          padding: 0 8px;
+     }
+
+     &__links {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+     }
+
+     &__link {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px 10px;
+          border-radius: 8px;
+          color: #64748b;
+          font-size: 13px;
+          font-weight: 600;
+          transition:
+               background 0.16s ease,
+               color 0.16s ease;
+
+          svg {
+               width: 16px;
+               height: 16px;
+               flex: 0 0 16px;
+               opacity: 0.7;
+               transition: opacity 0.16s ease;
+          }
+
+          &:hover {
+               background: #f8fafc;
+               color: #1e293b;
+
+               svg {
+                    opacity: 1;
+               }
+          }
+
+          &.active {
+               font-weight: 800;
+               color: #1e293b;
+               background: #f1f5f9;
+
+               svg {
+                    opacity: 1;
+               }
+          }
+     }
+}
+
+// ── Author sidebar variant ────────────────────────────────────────────────────
+
+.dashboard_sidebar--author {
+     background: linear-gradient(180deg, #1c1410 0%, #231a10 100%);
+     border-color: rgba(245, 158, 11, 0.12);
+     box-shadow:
+          0 1px 3px rgba(0, 0, 0, 0.2),
+          0 8px 24px rgba(0, 0, 0, 0.15);
+
+     .dashboard_sidebar__header {
+          border-bottom-color: rgba(245, 158, 11, 0.15);
+     }
+
+     .dashboard_sidebar__brand {
+          color: rgba(245, 158, 11, 0.7);
+     }
+
+     .dashboard_sidebar__section_title {
+          color: rgba(255, 255, 255, 0.25);
+     }
+
+     .dashboard_sidebar__link {
+          color: rgba(255, 255, 255, 0.55);
+
+          &:hover {
+               background: rgba(245, 158, 11, 0.08);
+               color: rgba(255, 255, 255, 0.9);
+          }
+
+          &.active {
+               background: rgba(245, 158, 11, 0.14);
+               color: #f59e0b;
+
+               svg {
+                    color: #f59e0b;
+               }
+          }
+     }
+}
+
+// ── User sidebar variant ─────────────────────────────────────────────────────
+
+.dashboard_sidebar--user {
+     background: linear-gradient(180deg, #fdf8f0 0%, #faf5ea 100%);
+     border-color: rgba(192, 102, 74, 0.1);
+     box-shadow:
+          0 1px 3px rgba(45, 27, 0, 0.06),
+          0 8px 24px rgba(45, 27, 0, 0.06);
+
+     .dashboard_sidebar__header {
+          border-bottom-color: rgba(192, 102, 74, 0.12);
+     }
+
+     .dashboard_sidebar__brand {
+          color: rgba(192, 102, 74, 0.7);
+     }
+
+     .dashboard_sidebar__section_title {
+          color: #c4b09a;
+     }
+
+     .dashboard_sidebar__link {
+          color: #78706a;
+
+          &:hover {
+               background: rgba(192, 102, 74, 0.07);
+               color: #2d1b00;
+          }
+
+          &.active {
+               background: rgba(192, 102, 74, 0.12);
+               color: #c0664a;
+               font-weight: 800;
+
+               svg {
+                    color: #c0664a;
+               }
+          }
+     }
+}
