@@ -89,6 +89,23 @@ const BookmarkIcon = ({ filled }: { filled?: boolean }) => (
 
 const ITEMS_PER_PAGE = 12;
 
+/** Compact page list: first, last, current ±1, with gaps, e.g. 1 … 4 5 6 … 12. */
+const getPageItems = (current: number, total: number): (number | 'gap')[] => {
+     if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+     const pages = new Set([1, total, current - 1, current, current + 1]);
+     if (current <= 3) [2, 3, 4].forEach((p) => pages.add(p));
+     if (current >= total - 2) [total - 3, total - 2, total - 1].forEach((p) => pages.add(p));
+     const sorted = [...pages].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
+     const items: (number | 'gap')[] = [];
+     sorted.forEach((p, i) => {
+          const prev = sorted[i - 1];
+          if (i > 0 && p - prev === 2) items.push(prev + 1); // don't hide a single page behind "…"
+          else if (i > 0 && p - prev > 2) items.push('gap');
+          items.push(p);
+     });
+     return items;
+};
+
 const Store_Page = () => {
      const navigate = useNavigate();
      const accessToken = useAuthStore((state) => state.accessToken);
@@ -97,6 +114,7 @@ const Store_Page = () => {
      const { banners, isLoading: bannersLoading } = useBanners();
 
      const featuredGridRef = useRef<HTMLDivElement>(null);
+     const galleryTopRef = useRef<HTMLDivElement>(null);
      const [activeTab, setActiveTab] = useState<string>('All');
      const [activeSubTab, setActiveSubTab] = useState<string>('All');
 
@@ -217,6 +235,15 @@ const Store_Page = () => {
 
      // Paginated Slice
      const totalPages = Math.ceil(galleryBooks.length / ITEMS_PER_PAGE);
+
+     const goToPage = (page: number) => {
+          setCurrentPage(Math.min(Math.max(page, 1), totalPages));
+          const top = galleryTopRef.current?.getBoundingClientRect().top;
+          window.scrollTo({
+               top: top !== undefined ? Math.max(window.scrollY + top - 100, 0) : 380,
+               behavior: 'smooth',
+          });
+     };
      const paginatedBooks = useMemo(() => {
           const start = (currentPage - 1) * ITEMS_PER_PAGE;
           return galleryBooks.slice(start, start + ITEMS_PER_PAGE);
@@ -404,7 +431,7 @@ const Store_Page = () => {
                               </div>
                          ) : (
                               <>
-                                   <div className="store_gallery_grid">
+                                   <div className="store_gallery_grid" ref={galleryTopRef}>
                                         {paginatedBooks.map((book) => (
                                              <div
                                                   key={book.id}
@@ -516,44 +543,39 @@ const Store_Page = () => {
                                                   <button
                                                        type="button"
                                                        className="store_pagination_btn"
+                                                       aria-label="Previous page"
                                                        disabled={currentPage === 1}
-                                                       onClick={() => {
-                                                            setCurrentPage((p) => Math.max(p - 1, 1));
-                                                            window.scrollTo({ top: 380, behavior: 'smooth' });
-                                                       }}
+                                                       onClick={() => goToPage(currentPage - 1)}
                                                   >
-                                                       &larr; Previous
+                                                       &larr;<span className="store_pagination_btn__label"> Previous</span>
                                                   </button>
 
                                                   <div className="store_pagination__pages">
-                                                       {[...Array(totalPages)].map((_, idx) => {
-                                                            const pageNum = idx + 1;
-                                                            return (
+                                                       {getPageItems(currentPage, totalPages).map((item, idx) =>
+                                                            item === 'gap' ? (
+                                                                 <span key={`gap-${idx}`} className="store_page_gap">…</span>
+                                                            ) : (
                                                                  <button
-                                                                      key={pageNum}
+                                                                      key={item}
                                                                       type="button"
-                                                                      className={`store_page_num_btn ${currentPage === pageNum ? 'store_page_num_btn--active' : ''}`}
-                                                                      onClick={() => {
-                                                                           setCurrentPage(pageNum);
-                                                                           window.scrollTo({ top: 380, behavior: 'smooth' });
-                                                                      }}
+                                                                      aria-current={currentPage === item ? 'page' : undefined}
+                                                                      className={`store_page_num_btn ${currentPage === item ? 'store_page_num_btn--active' : ''}`}
+                                                                      onClick={() => goToPage(item)}
                                                                  >
-                                                                      {pageNum}
+                                                                      {item}
                                                                  </button>
-                                                            );
-                                                       })}
+                                                            )
+                                                       )}
                                                   </div>
 
                                                   <button
                                                        type="button"
                                                        className="store_pagination_btn"
+                                                       aria-label="Next page"
                                                        disabled={currentPage === totalPages}
-                                                       onClick={() => {
-                                                            setCurrentPage((p) => Math.min(p + 1, totalPages));
-                                                            window.scrollTo({ top: 380, behavior: 'smooth' });
-                                                       }}
+                                                       onClick={() => goToPage(currentPage + 1)}
                                                   >
-                                                       Next &rarr;
+                                                       <span className="store_pagination_btn__label">Next </span>&rarr;
                                                   </button>
                                              </div>
                                         </div>
