@@ -47,6 +47,7 @@ export interface User {
      billing_state?: string;
      billing_postal_code?: string;
      billing_country?: string;
+     marketing_emails?: boolean;
 }
 
 export type AuthRole = 'SUPERADMIN' | 'ADMIN' | 'USER' | 'INSTITUTION_ADMIN' | 'INSTITUTION_MEMBER' | 'MANAGER';

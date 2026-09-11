@@ -143,6 +143,7 @@ export const auth_api = {
           billing_state?: string;
           billing_postal_code?: string;
           billing_country?: string;
+          marketing_emails?: boolean;
      }): Promise<{ success: boolean; message: string; user: any }> => {
           const response = await apiClient.put<{ success: boolean; message: string; user: any }>('/auth/update-profile', data);
           return response.data;

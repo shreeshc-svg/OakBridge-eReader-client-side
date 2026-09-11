@@ -51,6 +51,7 @@ const Profile_Page = () => {
      const [billingState, setBillingState] = useState(user?.billing_state || '');
      const [billingPostalCode, setBillingPostalCode] = useState(user?.billing_postal_code || '');
      const [billingCountry, setBillingCountry] = useState(user?.billing_country || 'India');
+     const [marketingEmails, setMarketingEmails] = useState(user?.marketing_emails !== false);
      const [saving, setSaving] = useState(false);
      const [error, setError] = useState('');
      const [success, setSuccess] = useState('');
@@ -96,6 +97,7 @@ const Profile_Page = () => {
           const hasStateChange = billingState.trim() !== (user.billing_state || '');
           const hasPostalCodeChange = billingPostalCode.trim() !== (user.billing_postal_code || '');
           const hasCountryChange = billingCountry.trim() !== (user.billing_country || 'India');
+          const hasMarketingChange = marketingEmails !== (user.marketing_emails !== false);
 
           const hasAddressChange =
                hasAddressLine1Change ||
@@ -105,7 +107,7 @@ const Profile_Page = () => {
                hasPostalCodeChange ||
                hasCountryChange;
 
-          if (!hasUsernameChange && !hasEmailChange && !hasPasswordChange && !hasAddressChange) {
+          if (!hasUsernameChange && !hasEmailChange && !hasPasswordChange && !hasAddressChange && !hasMarketingChange) {
                setError('No changes to save');
                return;
           }
@@ -123,6 +125,7 @@ const Profile_Page = () => {
                     billing_state?: string;
                     billing_postal_code?: string;
                     billing_country?: string;
+                    marketing_emails?: boolean;
                } = {};
 
                if (hasUsernameChange) {
@@ -151,6 +154,9 @@ const Profile_Page = () => {
                }
                if (hasCountryChange) {
                     updatePayload.billing_country = billingCountry.trim();
+               }
+               if (hasMarketingChange) {
+                    updatePayload.marketing_emails = marketingEmails;
                }
 
                const result = await auth_api.update_profile(updatePayload);
@@ -187,6 +193,7 @@ const Profile_Page = () => {
           setBillingState(user.billing_state || '');
           setBillingPostalCode(user.billing_postal_code || '');
           setBillingCountry(user.billing_country || 'India');
+          setMarketingEmails(user.marketing_emails !== false);
           setError('');
           setSuccess('');
      };
@@ -389,6 +396,34 @@ const Profile_Page = () => {
                                              />
                                         </div>
                                    </div>
+                              </div>
+
+                              {/* Email preferences */}
+                              <div className="profile_page__card" style={{ marginTop: '1.5rem' }}>
+                                   <h2 className="profile_page__card_title">Email Preferences</h2>
+                                   <div className="profile_page__divider" />
+
+                                   <label
+                                        htmlFor="profile-marketing-emails"
+                                        style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer' }}
+                                   >
+                                        <input
+                                             id="profile-marketing-emails"
+                                             type="checkbox"
+                                             checked={marketingEmails}
+                                             onChange={(e) => setMarketingEmails(e.target.checked)}
+                                             disabled={saving}
+                                             style={{ marginTop: '0.2rem' }}
+                                        />
+                                        <span>
+                                             <span className="profile_page__label" style={{ display: 'block' }}>
+                                                  Email me about new books and reminders
+                                             </span>
+                                             <span className="profile_page__input_hint">
+                                                  Login codes, password resets and purchase receipts are always sent.
+                                             </span>
+                                        </span>
+                                   </label>
                               </div>
 
                               {/* Actions */}

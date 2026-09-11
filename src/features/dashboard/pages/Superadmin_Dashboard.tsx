@@ -32,6 +32,7 @@ import Reports_Page from './Reports_Page';
 import Contact_Messages_Page from './Contact_Messages_Page';
 import Ebooks_Page from './Ebooks_Page';
 import Coupons_Page from './Coupons_Page';
+import Email_Updates_Page from './Email_Updates_Page';
 import './Superadmin_Dashboard.scss';
 
 const getIcon = (item: string) => {
@@ -91,6 +92,10 @@ const getIcon = (item: string) => {
           case 'Contact Messages':
                return (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" /><circle cx="12" cy="12" r="1" /><circle cx="17" cy="12" r="1" /><circle cx="7" cy="12" r="1" /></svg>
+               );
+          case 'Email Updates':
+               return (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg>
                );
           case 'Coupons':
                return (
@@ -206,6 +211,9 @@ const Superadmin_Dashboard = () => {
           if (!sidebarItems.includes('Coupons')) {
                sidebarItems.push('Coupons');
           }
+          if (!sidebarItems.includes('Email Updates')) {
+               sidebarItems.push('Email Updates');
+          }
           if (!sidebarItems.includes('Settings')) {
                sidebarItems.push('Settings');
           }
@@ -278,6 +286,10 @@ const Superadmin_Dashboard = () => {
 
           if (activeTab === 'Coupons' && role === 'SUPERADMIN') {
                return <Coupons_Page />;
+          }
+
+          if (activeTab === 'Email Updates' && role === 'SUPERADMIN') {
+               return <Email_Updates_Page />;
           }
 
 
