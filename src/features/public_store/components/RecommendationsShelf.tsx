@@ -80,9 +80,12 @@ export const RecommendationsShelf = ({ onSelectBook, categories }: Recommendatio
                               <div key={book.id} className="store_book_card" onClick={() => onSelectBook(book)}>
                                    <div className="store_book_card__cover">
                                         <img src={book.cover_image_url} alt={book.cover_image_alt || book.title} />
-                                        <div className="store_book_card__badge">{getCategoryNames(book.category_ids)}</div>{(!book.price || book.price <= 0) && (<div className="store_book_card__free_badge">FREE</div>)}
                                    </div>
                                     <div className="store_book_card__info">
+                                         <div className="store_book_card__labels">
+                                              <span className="store_book_card__badge">{getCategoryNames(book.category_ids)}</span>
+                                              {(!book.price || book.price <= 0) && <span className="store_book_card__free_badge">FREE</span>}
+                                         </div>
                                          <h4 className="store_book_card__title">{book.title}</h4>
                                          <span className="store_book_card__author">{book.author || book.publisher || 'Unknown'}</span>
                                          <span className="store_book_card__meta">{book.language} &bull; {book.total_pages} Pages</span>
