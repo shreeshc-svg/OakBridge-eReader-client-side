@@ -419,14 +419,14 @@ const Store_Page = () => {
                                                                  <span>{book.title?.slice(0, 2).toUpperCase()}</span>
                                                             </div>
                                                        )}
-                                                       <div className="store_book_card__badge">
-                                                            {getCategoryNames(book.category_ids)}
-                                                       </div>
-                                                       {(!book.price || book.price <= 0) && (
-                                                            <div className="store_book_card__free_badge">FREE</div>
-                                                       )}
                                                   </div>
                                                   <div className="store_book_card__info">
+                                                       <div className="store_book_card__labels">
+                                                            <span className="store_book_card__badge">{getCategoryNames(book.category_ids)}</span>
+                                                            {(!book.price || book.price <= 0) && (
+                                                                 <span className="store_book_card__free_badge">FREE</span>
+                                                            )}
+                                                       </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
                                                        <span className="store_book_card__author">
                                                             {book.author || book.publisher || 'Unknown'}
@@ -588,14 +588,14 @@ const Store_Page = () => {
                                              >
                                                   <div className="store_book_card__cover">
                                                        <img src={book.cover_image_url} alt={book.cover_image_alt || book.title} />
-                                                       <div className="store_book_card__badge">
-                                                            {getCategoryNames(book.category_ids)}
-                                                       </div>
-                                                       {(!book.price || book.price <= 0) && (
-                                                            <div className="store_book_card__free_badge">FREE</div>
-                                                       )}
                                                   </div>
                                                   <div className="store_book_card__info">
+                                                       <div className="store_book_card__labels">
+                                                            <span className="store_book_card__badge">{getCategoryNames(book.category_ids)}</span>
+                                                            {(!book.price || book.price <= 0) && (
+                                                                 <span className="store_book_card__free_badge">FREE</span>
+                                                            )}
+                                                       </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
                                                        <span className="store_book_card__author">
                                                             {book.author || book.publisher || 'Unknown'}
@@ -682,14 +682,14 @@ const Store_Page = () => {
                                              >
                                                   <div className="store_book_card__cover">
                                                        <img src={book.cover_image_url} alt={book.cover_image_alt || book.title} />
-                                                       <div className="store_book_card__badge">
-                                                            {getCategoryNames(book.category_ids)}
-                                                       </div>
-                                                       {(!book.price || book.price <= 0) && (
-                                                            <div className="store_book_card__free_badge">FREE</div>
-                                                       )}
                                                   </div>
                                                   <div className="store_book_card__info">
+                                                       <div className="store_book_card__labels">
+                                                            <span className="store_book_card__badge">{getCategoryNames(book.category_ids)}</span>
+                                                            {(!book.price || book.price <= 0) && (
+                                                                 <span className="store_book_card__free_badge">FREE</span>
+                                                            )}
+                                                       </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
                                                        <span className="store_book_card__author">
                                                             {book.author || book.publisher || 'Unknown'}
