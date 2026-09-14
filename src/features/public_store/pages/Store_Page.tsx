@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useBooks } from '../../books/hooks/use_books';
 import { useCategories } from '../../categories/hooks/use_categories';
 import { useBanners } from '../hooks/use_banners';
@@ -108,6 +108,12 @@ const getPageItems = (current: number, total: number): (number | 'gap')[] => {
 
 const Store_Page = () => {
      const navigate = useNavigate();
+     // The catalogue view (page number, category, filters, search, sort) is kept
+     // in the address bar, so the browser Back button from a book page returns
+     // the reader to exactly where they were.
+     const [searchParams, setSearchParams] = useSearchParams();
+     const initialParams = useRef(searchParams);
+     const isFirstFilterRun = useRef(true);
      const accessToken = useAuthStore((state) => state.accessToken);
      const { books, isLoading: booksLoading, fetchBooks, error: booksError } = useBooks();
      const { categories, fetchCategories, error: categoriesError } = useCategories();
@@ -115,17 +121,23 @@ const Store_Page = () => {
 
      const featuredGridRef = useRef<HTMLDivElement>(null);
      const galleryTopRef = useRef<HTMLDivElement>(null);
-     const [activeTab, setActiveTab] = useState<string>('All');
-     const [activeSubTab, setActiveSubTab] = useState<string>('All');
+     const [activeTab, setActiveTab] = useState<string>(initialParams.current.get('category') || 'All');
+     const [activeSubTab, setActiveSubTab] = useState<string>(initialParams.current.get('sub') || 'All');
 
      // Gallery Search & Sort States
-     const [searchQuery, setSearchQuery] = useState<string>('');
+     const [searchQuery, setSearchQuery] = useState<string>(initialParams.current.get('q') || '');
      const debouncedSearch = useDebounce(searchQuery, 300);
-     const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
-     const [sortBy, setSortBy] = useState<'newest' | 'title' | 'price_low' | 'price_high'>('newest');
+     const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>(
+          (initialParams.current.get('price') as 'all' | 'free' | 'paid') || 'all'
+     );
+     const [sortBy, setSortBy] = useState<'newest' | 'title' | 'price_low' | 'price_high'>(
+          (initialParams.current.get('sort') as 'newest' | 'title' | 'price_low' | 'price_high') || 'newest'
+     );
 
      // Pagination State
-     const [currentPage, setCurrentPage] = useState<number>(1);
+     const [currentPage, setCurrentPage] = useState<number>(
+          Math.max(Number(initialParams.current.get('page')) || 1, 1)
+     );
 
      const { cartBookIds, savedItems, addToCart, fetchCart, removeFromCart, moveToSaved } = useCartStore();
      const savedBookIds = useMemo(() => new Set(savedItems.map((item) => item.book_id)), [savedItems]);
@@ -148,10 +160,27 @@ const Store_Page = () => {
           setActiveSubTab('All');
      }, [activeTab]);
 
-     // Reset to page 1 on filter/search change
+     // Reset to page 1 on filter/search change (but keep the page restored from
+     // the address bar when the reader comes back from a book page)
      useEffect(() => {
+          if (isFirstFilterRun.current) {
+               isFirstFilterRun.current = false;
+               return;
+          }
           setCurrentPage(1);
      }, [activeTab, activeSubTab, priceFilter, debouncedSearch, sortBy]);
+
+     // Keep the address bar in step with the current view
+     useEffect(() => {
+          const params = new URLSearchParams();
+          if (activeTab !== 'All') params.set('category', activeTab);
+          if (activeSubTab !== 'All') params.set('sub', activeSubTab);
+          if (priceFilter !== 'all') params.set('price', priceFilter);
+          if (sortBy !== 'newest') params.set('sort', sortBy);
+          if (debouncedSearch.trim()) params.set('q', debouncedSearch.trim());
+          if (currentPage > 1) params.set('page', String(currentPage));
+          setSearchParams(params, { replace: true });
+     }, [activeTab, activeSubTab, priceFilter, sortBy, debouncedSearch, currentPage, setSearchParams]);
 
      const getCategoryNames = (ids?: string[]) => {
           if (!ids || ids.length === 0) return 'General';
@@ -244,6 +273,13 @@ const Store_Page = () => {
                behavior: 'smooth',
           });
      };
+     // If the restored page no longer exists (e.g. fewer results), show the last one
+     useEffect(() => {
+          if (totalPages > 0 && currentPage > totalPages) {
+               setCurrentPage(totalPages);
+          }
+     }, [totalPages, currentPage]);
+
      const paginatedBooks = useMemo(() => {
           const start = (currentPage - 1) * ITEMS_PER_PAGE;
           return galleryBooks.slice(start, start + ITEMS_PER_PAGE);
