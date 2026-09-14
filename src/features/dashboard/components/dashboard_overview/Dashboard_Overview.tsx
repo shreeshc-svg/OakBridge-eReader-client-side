@@ -239,14 +239,14 @@ const Superadmin_Overview = ({
           fetchBooks();
      }, [fetchBooks]);
 
+     // Returns the saved book so a multi-volume set can upload its volumes.
      const handleUploadSubmit = async (payload: any) => {
-          if (bookToEdit) {
-               await updateBook(bookToEdit.id, payload);
-          } else {
-               await createBook(payload);
-          }
+          const saved = bookToEdit
+               ? await updateBook(bookToEdit.id, payload)
+               : await createBook(payload);
           await fetchBooks();
           setBookToEdit(undefined);
+          return saved;
      };
 
      const handleEditClick = (book: Book, e: React.MouseEvent) => {

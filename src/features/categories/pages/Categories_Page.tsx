@@ -135,9 +135,11 @@ const Categories_Page = ({ data, role }: CategoriesPageProps) => {
           setIsUploadModalOpen(true);
      };
 
+     // Returns the saved book so a multi-volume set can upload its volumes.
      const handleBookUploadSubmit = async (payload: any) => {
-          await createBook(payload);
+          const saved = await createBook(payload);
           await fetchCategories(true);
+          return saved;
      };
 
      return (

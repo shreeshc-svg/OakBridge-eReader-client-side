@@ -489,6 +489,11 @@ const Store_Page = () => {
                                                             {(!book.price || book.price <= 0) && (
                                                                  <span className="store_book_card__free_badge">FREE</span>
                                                             )}
+                                                            {!!book.volume_count && (
+                                                                 <span className="store_book_card__set_badge">
+                                                                      SET OF {book.volume_count}
+                                                                 </span>
+                                                            )}
                                                        </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
                                                        <span className="store_book_card__author">
@@ -653,6 +658,11 @@ const Store_Page = () => {
                                                             {(!book.price || book.price <= 0) && (
                                                                  <span className="store_book_card__free_badge">FREE</span>
                                                             )}
+                                                            {!!book.volume_count && (
+                                                                 <span className="store_book_card__set_badge">
+                                                                      SET OF {book.volume_count}
+                                                                 </span>
+                                                            )}
                                                        </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
                                                        <span className="store_book_card__author">
@@ -746,6 +756,11 @@ const Store_Page = () => {
                                                             <span className="store_book_card__badge">{getCategoryNames(book.category_ids)}</span>
                                                             {(!book.price || book.price <= 0) && (
                                                                  <span className="store_book_card__free_badge">FREE</span>
+                                                            )}
+                                                            {!!book.volume_count && (
+                                                                 <span className="store_book_card__set_badge">
+                                                                      SET OF {book.volume_count}
+                                                                 </span>
                                                             )}
                                                        </div>
                                                        <h4 className="store_book_card__title">{book.title}</h4>
