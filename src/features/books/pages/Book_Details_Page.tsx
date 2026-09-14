@@ -176,6 +176,11 @@ const Book_Details_Page = () => {
           return new Date(book.createdAt).getFullYear().toString();
      }, [book]);
 
+     // Multi-volume set: the set itself is what is bought, and each volume is
+     // read on its own once the set is owned.
+     const volumes = useMemo(() => book?.volumes || [], [book]);
+     const isSet = !!book?.is_set || volumes.length > 0;
+
      const handleStartOver = async () => {
           if (!book) return;
           try {
@@ -327,8 +332,14 @@ const Book_Details_Page = () => {
                               <div className="bd_metadata_row">
                                    <div className="bd_metadata_item">
                                         <span className="value">{book.total_pages}</span>
-                                        <span className="label">Pages</span>
+                                        <span className="label">{isSet ? 'Pages (all volumes)' : 'Pages'}</span>
                                    </div>
+                                   {isSet && (
+                                        <div className="bd_metadata_item">
+                                             <span className="value">{volumes.length}</span>
+                                             <span className="label">Volumes</span>
+                                        </div>
+                                   )}
                                    <div className="bd_metadata_item">
                                         <span className="value">{book.total_chapters}</span>
                                         <span className="label">Chapters</span>
@@ -372,12 +383,53 @@ const Book_Details_Page = () => {
                                    </div>
                               )}
 
+                              {/* Volumes in this set - one specification row per
+                                  volume, with its own Read button once owned */}
+                              {isSet && volumes.length > 0 && (
+                                   <div className="bd_volumes">
+                                        <div className="bd_volumes_head">
+                                             <span>Volumes in this set</span>
+                                             <span className="bd_volumes_note">
+                                                  {isBookInLibrary
+                                                       ? 'All volumes are included'
+                                                       : 'Sold only as the complete set'}
+                                             </span>
+                                        </div>
+                                        {volumes.map((volume, index) => (
+                                             <div key={volume.id} className="bd_volume_row">
+                                                  <div className="bd_volume_info">
+                                                       <strong>
+                                                            {volume.volume_label ||
+                                                                 `Volume ${volume.volume_number || index + 1}`}
+                                                       </strong>
+                                                       <span>
+                                                            {(volume.total_pages || 0).toLocaleString('en-IN')} pages
+                                                            {volume.total_chapters
+                                                                 ? ` · ${volume.total_chapters} chapters`
+                                                                 : ''}
+                                                       </span>
+                                                  </div>
+                                                  {isBookInLibrary ? (
+                                                       <Link
+                                                            to={`/reader/${volume.id}`}
+                                                            className="bd_volume_read"
+                                                       >
+                                                            Read
+                                                       </Link>
+                                                  ) : (
+                                                       <span className="bd_volume_locked">Included</span>
+                                                  )}
+                                             </div>
+                                        ))}
+                                   </div>
+                              )}
+
                               {/* Actions Container */}
                               <div className="bd_actions_container">
-                                   {book.file_url && isBookInLibrary ? (
+                                   {(book.file_url || isSet) && isBookInLibrary ? (
                                         <>
                                              <Link
-                                                  to={`/reader/${book.id}`}
+                                                  to={`/reader/${isSet && volumes.length > 0 ? volumes[0].id : book.id}`}
                                                   className="bd_btn bd_btn--primary"
                                              >
                                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '8px' }}>

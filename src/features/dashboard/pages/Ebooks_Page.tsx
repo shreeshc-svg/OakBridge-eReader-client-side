@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBooks } from '../../books/hooks/use_books';
+import { books_api } from '../../books/api/books.api';
 import type { Book } from '../../books/types/books.api.types';
 import Book_Upload_Modal from '../../books/components/book_upload_modal/Book_Upload_Modal';
 import Bulk_Upload_Modal from '../../books/components/bulk_upload_modal/Bulk_Upload_Modal';
@@ -34,19 +35,38 @@ const Ebooks_Page = ({ role }: EbooksPageProps) => {
           fetchBooks();
      }, [fetchBooks]);
 
+     // Returns the saved book so the modal can upload the volumes of a
+     // multi-volume set one at a time before it closes itself.
      const handleCreateOrUpdateBook = async (payload: any) => {
-          if (bookToEdit) {
-               await updateBook(bookToEdit.id, payload);
-          } else {
-               await createBook(payload);
-          }
-          await fetchBooks();
-          setBookToEdit(undefined);
-          setIsUploadModalOpen(false);
+          const saved = bookToEdit
+               ? await updateBook(bookToEdit.id, payload)
+               : await createBook(payload);
+          return saved;
      };
 
-     const handleEditClick = (book: Book, e?: React.MouseEvent) => {
+     const handleUploadModalClose = () => {
+          setIsUploadModalOpen(false);
+          setBookToEdit(undefined);
+          fetchBooks();
+     };
+
+     const handleEditClick = async (book: Book, e?: React.MouseEvent) => {
           e?.stopPropagation();
+          // The list payload has no volumes[], so a set is re-fetched in full
+          // to show its existing volumes in the form.
+          if (book.volume_count || book.is_set) {
+               try {
+                    const response = await books_api.get_book(
+                         book.id,
+                         accessToken || null
+                    );
+                    setBookToEdit(response.book);
+                    setIsUploadModalOpen(true);
+                    return;
+               } catch {
+                    // fall through to the list copy
+               }
+          }
           setBookToEdit(book);
           setIsUploadModalOpen(true);
      };
@@ -328,6 +348,9 @@ const Ebooks_Page = ({ role }: EbooksPageProps) => {
                                              <span>{book.language || 'English'}</span>
                                              {book.total_pages && <span> &bull; {book.total_pages} pages</span>}
                                              {book.isbn && <span> &bull; ISBN: {book.isbn}</span>}
+                                             {!!book.volume_count && (
+                                                  <span> &bull; Set of {book.volume_count} volumes</span>
+                                             )}
                                         </div>
 
                                         <div className="ebooks_card__actions">
@@ -467,10 +490,7 @@ const Ebooks_Page = ({ role }: EbooksPageProps) => {
                {/* ── Book Upload / Edit Modal ── */}
                <Book_Upload_Modal
                     isOpen={isUploadModalOpen}
-                    onClose={() => {
-                         setIsUploadModalOpen(false);
-                         setBookToEdit(undefined);
-                    }}
+                    onClose={handleUploadModalClose}
                     onSubmit={handleCreateOrUpdateBook}
                     bookToEdit={bookToEdit}
                />

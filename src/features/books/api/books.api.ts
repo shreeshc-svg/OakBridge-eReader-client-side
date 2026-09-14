@@ -1,7 +1,9 @@
 import { apiClient } from '../../../config/axios.config';
 import type {
+     AddVolumePayload,
      BookResponse,
      BooksResponse,
+     BookVolume,
      CreateBookPayload,
      UpdateBookPayload,
 } from '../types/books.api.types';
@@ -81,7 +83,12 @@ export const books_api = {
                formData.append('isNewRelease', data.isNewRelease.toString());
           }
           formData.append('cover_image', data.cover_image);
-          formData.append('book_file', data.book_file);
+          // A set carries no file of its own; volumes are uploaded afterwards
+          if (data.is_set) {
+               formData.append('is_set', 'true');
+          } else if (data.book_file) {
+               formData.append('book_file', data.book_file);
+          }
 
           if (data.cover_image_alt !== undefined) {
                formData.append('cover_image_alt', data.cover_image_alt);
@@ -149,6 +156,9 @@ export const books_api = {
           if (data.isNewRelease !== undefined) {
                formData.append('isNewRelease', data.isNewRelease.toString());
           }
+          if (data.is_set !== undefined) {
+               formData.append('is_set', data.is_set.toString());
+          }
           if (data.cover_image)
                formData.append('cover_image', data.cover_image);
           if (data.cover_image_alt !== undefined)
@@ -177,6 +187,67 @@ export const books_api = {
           );
           return response.data;
      },
+     // ── Multi-volume sets ────────────────────────────────────────────────
+     // Volumes are uploaded one at a time so a large PDF cannot fail the whole
+     // set, and so the admin form can show per-volume progress.
+     add_volume: async (
+          setId: string,
+          data: AddVolumePayload,
+          accessToken: string,
+          onProgress?: (percent: number) => void
+     ): Promise<{ message: string; data: BookVolume }> => {
+          const formData = new FormData();
+          formData.append('book_file', data.book_file);
+          if (data.cover_image) formData.append('cover_image', data.cover_image);
+          if (data.volume_label) formData.append('volume_label', data.volume_label);
+          if (data.volume_number !== undefined)
+               formData.append('volume_number', data.volume_number.toString());
+          if (data.total_pages !== undefined)
+               formData.append('total_pages', data.total_pages.toString());
+          if (data.total_chapters !== undefined)
+               formData.append('total_chapters', data.total_chapters.toString());
+
+          const response = await apiClient.post<{ message: string; data: BookVolume }>(
+               `/books/${setId}/volumes`,
+               formData,
+               {
+                    headers: {
+                         Authorization: `Bearer ${accessToken}`,
+                         'Content-Type': 'multipart/form-data',
+                    },
+                    onUploadProgress: (event) => {
+                         if (!onProgress || !event.total) return;
+                         onProgress(Math.round((event.loaded * 100) / event.total));
+                    },
+               }
+          );
+          return response.data;
+     },
+
+     delete_volume: async (
+          volumeId: string,
+          accessToken: string
+     ): Promise<{ message: string }> => {
+          const response = await apiClient.delete<{ message: string }>(
+               `/books/volumes/${volumeId}`,
+               { headers: { Authorization: `Bearer ${accessToken}` } }
+          );
+          return response.data;
+     },
+
+     reorder_volumes: async (
+          setId: string,
+          volumeIds: string[],
+          accessToken: string
+     ): Promise<{ message: string; data: BookVolume[] }> => {
+          const response = await apiClient.put<{ message: string; data: BookVolume[] }>(
+               `/books/${setId}/volumes/order`,
+               { volume_ids: volumeIds },
+               { headers: { Authorization: `Bearer ${accessToken}` } }
+          );
+          return response.data;
+     },
+
      delete_book: async (
           id: string,
           accessToken: string

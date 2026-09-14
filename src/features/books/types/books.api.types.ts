@@ -1,3 +1,22 @@
+/** One volume of a multi-volume set. Never listed or sold on its own. */
+export interface BookVolume {
+     id: string;
+     volume_number: number | null;
+     volume_label: string | null;
+     total_pages: number;
+     total_chapters: number;
+     isbn: string;
+     cover_image_url: string;
+}
+
+/** A volume waiting to be uploaded from the admin form. */
+export interface PendingVolume {
+     volume_label: string;
+     total_pages: number;
+     total_chapters: number;
+     book_file: File | null;
+}
+
 export interface Book {
      id: string;
      title: string;
@@ -20,6 +39,14 @@ export interface Book {
      is_active?: boolean;
      isTrending: boolean;
      isNewRelease: boolean;
+     // Multi-volume sets
+     is_set?: boolean;
+     volumes?: BookVolume[];
+     volume_count?: number;
+     set_parent_id?: string | null;
+     volume_number?: number | null;
+     volume_label?: string | null;
+     parent_set?: { id: string; title: string; slug: string } | null;
      createdAt: string;
      updatedAt: string;
 }
@@ -42,8 +69,20 @@ export interface CreateBookPayload {
      cover_image_alt?: string;
      preview_pages_alt?: string[];
      cover_image: File;
-     book_file: File;
+     // A multi-volume set has no file of its own - its volumes are uploaded
+     // one at a time after the set itself is created.
+     book_file?: File | null;
+     is_set?: boolean;
      preview_pages?: File[];
+}
+
+export interface AddVolumePayload {
+     volume_label?: string;
+     volume_number?: number;
+     total_pages?: number;
+     total_chapters?: number;
+     book_file: File;
+     cover_image?: File;
 }
 
 export interface UpdateBookPayload {
@@ -64,6 +103,7 @@ export interface UpdateBookPayload {
      preview_pages_alt?: string[];
      cover_image?: File;
      book_file?: File;
+     is_set?: boolean;
      preview_pages?: File[];
 }
 

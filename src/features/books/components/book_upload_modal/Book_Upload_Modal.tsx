@@ -1,15 +1,34 @@
 import { useState, useEffect, useRef } from 'react';
 import { useCategories } from '../../../categories/hooks/use_categories';
-import type { Book } from '../../types/books.api.types';
+import { books_api } from '../../api/books.api';
+import { useAuthStore } from '../../../../store/auth.store';
+import type {
+     Book,
+     BookVolume,
+     PendingVolume,
+} from '../../types/books.api.types';
 import './Book_Upload_Modal.scss';
 
 interface BookUploadModalProps {
      isOpen: boolean;
      onClose: () => void;
-     onSubmit: (payload: any) => Promise<void>;
+     // Returns the saved book when the caller has it, so a set can upload its
+     // volumes straight afterwards.
+     onSubmit: (payload: any) => Promise<any>;
      bookToEdit?: Book;
      initialCategoryId?: string;
 }
+
+const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+const volumeLabelFor = (index: number) =>
+     `Volume ${ROMAN[index] || index}`;
+
+const emptyVolume = (index: number): PendingVolume => ({
+     volume_label: volumeLabelFor(index),
+     total_pages: 0,
+     total_chapters: 0,
+     book_file: null,
+});
 
 const Book_Upload_Modal = ({
      isOpen,
@@ -40,6 +59,19 @@ const Book_Upload_Modal = ({
      const [isTrending, setIsTrending] = useState(false);
      const [isNewRelease, setIsNewRelease] = useState(false);
      const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(null);
+
+     // ── Multi-volume set ────────────────────────────────────────────────
+     const accessToken = useAuthStore((state) => state.accessToken);
+     const [isSet, setIsSet] = useState(false);
+     const [existingVolumes, setExistingVolumes] = useState<BookVolume[]>([]);
+     const [newVolumes, setNewVolumes] = useState<PendingVolume[]>([]);
+     const [volumeProgress, setVolumeProgress] = useState<
+          { label: string; percent: number; done: boolean }[]
+     >([]);
+
+     const setTotalPages_computed =
+          existingVolumes.reduce((sum, v) => sum + (v.total_pages || 0), 0) +
+          newVolumes.reduce((sum, v) => sum + (Number(v.total_pages) || 0), 0);
 
      useEffect(() => {
           if (!coverImage) {
@@ -76,6 +108,12 @@ const Book_Upload_Modal = ({
                     setIsNewRelease(bookToEdit.isNewRelease || false);
                     setCoverImageAlt(bookToEdit.cover_image_alt || '');
                     setPreviewAlts(bookToEdit.preview_pages_alt || []);
+                    setIsSet(
+                         !!bookToEdit.is_set ||
+                              (bookToEdit.volumes || []).length > 0
+                    );
+                    setExistingVolumes(bookToEdit.volumes || []);
+                    setNewVolumes([]);
                } else {
                     setTitle('');
                     setDescription('');
@@ -92,11 +130,15 @@ const Book_Upload_Modal = ({
                     setIsNewRelease(false);
                     setCoverImageAlt('');
                     setPreviewAlts([]);
+                    setIsSet(false);
+                    setExistingVolumes([]);
+                    setNewVolumes([]);
                }
                setCoverImage(null);
                setBookFile(null);
                setError(null);
                setIsDropdownOpen(false);
+               setVolumeProgress([]);
           }
      }, [isOpen, fetchCategories, bookToEdit]);
 
@@ -135,6 +177,45 @@ const Book_Upload_Modal = ({
           );
      };
 
+     const handleAddVolume = () => {
+          setNewVolumes((prev) => [
+               ...prev,
+               emptyVolume(existingVolumes.length + prev.length + 1),
+          ]);
+     };
+
+     const patchVolume = (index: number, patch: Partial<PendingVolume>) => {
+          setNewVolumes((prev) =>
+               prev.map((vol, i) => (i === index ? { ...vol, ...patch } : vol))
+          );
+     };
+
+     const handleRemoveNewVolume = (index: number) => {
+          setNewVolumes((prev) => prev.filter((_, i) => i !== index));
+     };
+
+     const handleDeleteExistingVolume = async (volume: BookVolume) => {
+          if (!accessToken) return;
+          if (
+               !window.confirm(
+                    `Remove ${volume.volume_label || 'this volume'} from the set? This deletes its file and cannot be undone.`
+               )
+          ) {
+               return;
+          }
+          try {
+               await books_api.delete_volume(volume.id, accessToken);
+               setExistingVolumes((prev) =>
+                    prev.filter((v) => v.id !== volume.id)
+               );
+          } catch (err: unknown) {
+               const errorObj = err as { response?: { data?: { message?: string } } };
+               setError(
+                    errorObj.response?.data?.message || 'Failed to remove volume'
+               );
+          }
+     };
+
      const handleSubmit = async (e: React.FormEvent) => {
           e.preventDefault();
           if (
@@ -143,8 +224,8 @@ const Book_Upload_Modal = ({
                !author ||
                !language ||
                !isbn ||
-               !totalPages ||
-               !totalChapters ||
+               (!isSet && !totalPages) ||
+               (!isSet && !totalChapters) ||
                price === ''
           ) {
                setError('Please fill in all required text fields.');
@@ -155,8 +236,23 @@ const Book_Upload_Modal = ({
                     setError('Please upload a cover image.');
                     return;
                }
-               if (!bookFile) {
+               if (!isSet && !bookFile) {
                     setError('Please upload the book file (PDF).');
+                    return;
+               }
+          }
+          if (isSet) {
+               if (existingVolumes.length + newVolumes.length === 0) {
+                    setError('Add at least one volume to this set.');
+                    return;
+               }
+               const incomplete = newVolumes.findIndex(
+                    (vol) => !vol.book_file || !Number(vol.total_pages)
+               );
+               if (incomplete !== -1) {
+                    setError(
+                         `${newVolumes[incomplete].volume_label || `Volume ${incomplete + 1}`}: choose a PDF and enter its page count.`
+                    );
                     return;
                }
           }
@@ -172,8 +268,14 @@ const Book_Upload_Modal = ({
                     publisher: author,
                     language,
                     isbn,
-                    total_pages: Number(totalPages),
-                    total_chapters: Number(totalChapters),
+                    // A set's page count is the sum of its volumes
+                    total_pages: isSet
+                         ? setTotalPages_computed
+                         : Number(totalPages),
+                    total_chapters: isSet
+                         ? Number(totalChapters) || 0
+                         : Number(totalChapters),
+                    is_set: isSet,
                     price: Number(price) * 100, // Convert to paise
                     category_ids: selectedCategories,
                     access_period_days: accessPeriodDays === '' || accessPeriodDays === null ? null : Number(accessPeriodDays),
@@ -183,16 +285,69 @@ const Book_Upload_Modal = ({
                     preview_pages_alt: previewAlts,
                };
                if (coverImage) payload.cover_image = coverImage;
-               if (bookFile) payload.book_file = bookFile;
+               if (bookFile && !isSet) payload.book_file = bookFile;
                if (previewPages.length > 0) payload.preview_pages = previewPages;
 
-               await onSubmit(payload);
+               const saved = await onSubmit(payload);
+
+               // Volumes go up one at a time, so a big PDF can't take the whole
+               // set down with it and the admin sees which one is uploading.
+               if (isSet && newVolumes.length > 0) {
+                    const setId = saved?.id || bookToEdit?.id;
+                    if (!setId) {
+                         throw new Error(
+                              'The set was saved but its volumes could not be uploaded. Open it again and add them.'
+                         );
+                    }
+                    if (!accessToken) throw new Error('Not authenticated');
+
+                    setVolumeProgress(
+                         newVolumes.map((vol) => ({
+                              label: vol.volume_label,
+                              percent: 0,
+                              done: false,
+                         }))
+                    );
+
+                    for (let i = 0; i < newVolumes.length; i += 1) {
+                         const vol = newVolumes[i];
+                         await books_api.add_volume(
+                              setId,
+                              {
+                                   volume_label: vol.volume_label,
+                                   volume_number:
+                                        existingVolumes.length + i + 1,
+                                   total_pages: Number(vol.total_pages) || 0,
+                                   total_chapters:
+                                        Number(vol.total_chapters) || 0,
+                                   book_file: vol.book_file as File,
+                              },
+                              accessToken,
+                              (percent) =>
+                                   setVolumeProgress((prev) =>
+                                        prev.map((p, idx) =>
+                                             idx === i ? { ...p, percent } : p
+                                        )
+                                   )
+                         );
+                         setVolumeProgress((prev) =>
+                              prev.map((p, idx) =>
+                                   idx === i
+                                        ? { ...p, percent: 100, done: true }
+                                        : p
+                              )
+                         );
+                    }
+               }
+
                onClose();
           } catch (err: unknown) {
+               const errorObj = err as {
+                    response?: { data?: { message?: string } };
+               };
                const errorMsg =
-                    err instanceof Error
-                         ? err.message
-                         : 'Failed to upload book.';
+                    errorObj.response?.data?.message ||
+                    (err instanceof Error ? err.message : 'Failed to upload book.');
                setError(errorMsg);
           } finally {
                setIsLoading(false);
@@ -231,6 +386,30 @@ const Book_Upload_Modal = ({
 
                     <form onSubmit={handleSubmit} className="book_modal__form">
                          {error && <div className="book_modal__error">{error}</div>}
+
+                         {/* ── Multi-volume set ── */}
+                         <label className="book_modal__set_toggle">
+                              <input
+                                   type="checkbox"
+                                   checked={isSet}
+                                   onChange={(e) => {
+                                        setIsSet(e.target.checked);
+                                        if (e.target.checked && newVolumes.length === 0 && existingVolumes.length === 0) {
+                                             setNewVolumes([emptyVolume(1), emptyVolume(2)]);
+                                        }
+                                   }}
+                                   disabled={isLoading}
+                              />
+                              <span>
+                                   <strong>This is a multi-volume set</strong>
+                                   <small>
+                                        The set is sold as one book. Upload a PDF per
+                                        volume below - volumes are not listed or sold
+                                        separately, and they share this ISBN,
+                                        description and price.
+                                   </small>
+                              </span>
+                         </label>
 
                          <div className="book_modal__grid">
                               {/* Left Column */}
@@ -307,18 +486,23 @@ const Book_Upload_Modal = ({
                                         </div>
                                         <div className="book_modal__field">
                                              <label htmlFor="totalPages">
-                                                  Total Pages <span className="required">*</span>
+                                                  Total Pages{' '}
+                                                  {isSet ? (
+                                                       <small>(sum of volumes)</small>
+                                                  ) : (
+                                                       <span className="required">*</span>
+                                                  )}
                                              </label>
                                              <input
                                                   id="totalPages"
                                                   type="number"
-                                                  value={totalPages}
+                                                  value={isSet ? setTotalPages_computed : totalPages}
                                                   onChange={(e) =>
                                                        setTotalPages(
                                                             e.target.value === '' ? '' : Number(e.target.value)
                                                        )
                                                   }
-                                                  disabled={isLoading}
+                                                  disabled={isLoading || isSet}
                                              />
                                         </div>
                                    </div>
@@ -483,26 +667,170 @@ const Book_Upload_Modal = ({
                                         />
                                    </div>
 
-                                   <div className="book_modal__field">
-                                        <label>Book File (PDF) {!bookToEdit && <span className="required">*</span>}</label>
-                                        <div className="book_modal__file_drop book_modal__file_drop--accent">
-                                             <input
-                                                  type="file"
-                                                  accept=".pdf"
-                                                  onChange={(e) =>
-                                                       setBookFile(e.target.files?.[0] || null)
-                                                  }
-                                                  disabled={isLoading}
-                                             />
-                                             {bookFile ? (
-                                                  <span className="file_name">{bookFile.name}</span>
-                                             ) : (
-                                                  <span className="file_placeholder">
-                                                       {bookToEdit ? 'Choose new book file to replace...' : 'Choose PDF file...'}
+                                   {!isSet && (
+                                        <div className="book_modal__field">
+                                             <label>Book File (PDF) {!bookToEdit && <span className="required">*</span>}</label>
+                                             <div className="book_modal__file_drop book_modal__file_drop--accent">
+                                                  <input
+                                                       type="file"
+                                                       accept=".pdf"
+                                                       onChange={(e) =>
+                                                            setBookFile(e.target.files?.[0] || null)
+                                                       }
+                                                       disabled={isLoading}
+                                                  />
+                                                  {bookFile ? (
+                                                       <span className="file_name">{bookFile.name}</span>
+                                                  ) : (
+                                                       <span className="file_placeholder">
+                                                            {bookToEdit ? 'Choose new book file to replace...' : 'Choose PDF file...'}
+                                                       </span>
+                                                  )}
+                                             </div>
+                                        </div>
+                                   )}
+
+                                   {isSet && (
+                                        <div className="book_modal__volumes">
+                                             <div className="book_modal__volumes_head">
+                                                  <label>
+                                                       Volumes <span className="required">*</span>
+                                                  </label>
+                                                  <span className="book_modal__volumes_total">
+                                                       {existingVolumes.length + newVolumes.length} volume
+                                                       {existingVolumes.length + newVolumes.length === 1 ? '' : 's'}
+                                                       {setTotalPages_computed > 0 &&
+                                                            ` · ${setTotalPages_computed.toLocaleString('en-IN')} pages`}
                                                   </span>
+                                             </div>
+
+                                             {existingVolumes.map((volume) => (
+                                                  <div
+                                                       key={volume.id}
+                                                       className="book_modal__volume book_modal__volume--saved"
+                                                  >
+                                                       <div className="book_modal__volume_saved_info">
+                                                            <strong>
+                                                                 {volume.volume_label ||
+                                                                      `Volume ${volume.volume_number || ''}`}
+                                                            </strong>
+                                                            <span>
+                                                                 {(volume.total_pages || 0).toLocaleString('en-IN')} pages
+                                                                 {volume.total_chapters
+                                                                      ? ` · ${volume.total_chapters} chapters`
+                                                                      : ''}
+                                                            </span>
+                                                       </div>
+                                                       <button
+                                                            type="button"
+                                                            className="book_modal__volume_remove"
+                                                            onClick={() => handleDeleteExistingVolume(volume)}
+                                                            disabled={isLoading}
+                                                       >
+                                                            Remove
+                                                       </button>
+                                                  </div>
+                                             ))}
+
+                                             {newVolumes.map((volume, index) => (
+                                                  <div key={index} className="book_modal__volume">
+                                                       <div className="book_modal__volume_row">
+                                                            <input
+                                                                 type="text"
+                                                                 className="book_modal__volume_label"
+                                                                 value={volume.volume_label}
+                                                                 onChange={(e) =>
+                                                                      patchVolume(index, { volume_label: e.target.value })
+                                                                 }
+                                                                 placeholder="Volume I"
+                                                                 disabled={isLoading}
+                                                            />
+                                                            <input
+                                                                 type="number"
+                                                                 className="book_modal__volume_pages"
+                                                                 value={volume.total_pages || ''}
+                                                                 onChange={(e) =>
+                                                                      patchVolume(index, {
+                                                                           total_pages:
+                                                                                e.target.value === '' ? 0 : Number(e.target.value),
+                                                                      })
+                                                                 }
+                                                                 placeholder="Pages"
+                                                                 disabled={isLoading}
+                                                            />
+                                                            <input
+                                                                 type="number"
+                                                                 className="book_modal__volume_pages"
+                                                                 value={volume.total_chapters || ''}
+                                                                 onChange={(e) =>
+                                                                      patchVolume(index, {
+                                                                           total_chapters:
+                                                                                e.target.value === '' ? 0 : Number(e.target.value),
+                                                                      })
+                                                                 }
+                                                                 placeholder="Chapters"
+                                                                 disabled={isLoading}
+                                                            />
+                                                            <button
+                                                                 type="button"
+                                                                 className="book_modal__volume_remove"
+                                                                 onClick={() => handleRemoveNewVolume(index)}
+                                                                 disabled={isLoading}
+                                                            >
+                                                                 Remove
+                                                            </button>
+                                                       </div>
+                                                       <div className="book_modal__file_drop book_modal__file_drop--accent">
+                                                            <input
+                                                                 type="file"
+                                                                 accept=".pdf"
+                                                                 onChange={(e) =>
+                                                                      patchVolume(index, {
+                                                                           book_file: e.target.files?.[0] || null,
+                                                                      })
+                                                                 }
+                                                                 disabled={isLoading}
+                                                            />
+                                                            {volume.book_file ? (
+                                                                 <span className="file_name">
+                                                                      {volume.book_file.name}
+                                                                 </span>
+                                                            ) : (
+                                                                 <span className="file_placeholder">
+                                                                      Choose the PDF for this volume...
+                                                                 </span>
+                                                            )}
+                                                       </div>
+                                                  </div>
+                                             ))}
+
+                                             <button
+                                                  type="button"
+                                                  className="book_modal__add_volume"
+                                                  onClick={handleAddVolume}
+                                                  disabled={isLoading}
+                                             >
+                                                  + Add Volume
+                                             </button>
+
+                                             {volumeProgress.length > 0 && (
+                                                  <div className="book_modal__volume_progress">
+                                                       {volumeProgress.map((p, i) => (
+                                                            <div key={i} className="book_modal__volume_progress_row">
+                                                                 <span>{p.label}</span>
+                                                                 <div className="book_modal__progress_track">
+                                                                      <div
+                                                                           className="book_modal__progress_bar"
+                                                                           style={{ width: `${p.percent}%` }}
+                                                                      />
+                                                                 </div>
+                                                                 <span>{p.done ? 'Uploaded' : `${p.percent}%`}</span>
+                                                            </div>
+                                                       ))}
+                                                  </div>
                                              )}
                                         </div>
-                                   </div>
+                                   )}
 
                                    <div className="book_modal__field">
                                         <label>Sample Preview Pages (Optional)</label>
