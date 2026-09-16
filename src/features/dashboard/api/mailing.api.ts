@@ -35,6 +35,8 @@ export interface MailingUser {
 export interface AutomaticEmails {
      inactivity_reminders: boolean;
      cart_reminders: boolean;
+     /** "New book added" alerts fired by a book upload (in-app + email). */
+     new_book_notifications: boolean;
 }
 
 export interface MailingOverview {

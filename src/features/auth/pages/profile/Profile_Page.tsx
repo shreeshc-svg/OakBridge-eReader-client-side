@@ -52,6 +52,9 @@ const Profile_Page = () => {
      const [billingPostalCode, setBillingPostalCode] = useState(user?.billing_postal_code || '');
      const [billingCountry, setBillingCountry] = useState(user?.billing_country || 'India');
      const [marketingEmails, setMarketingEmails] = useState(user?.marketing_emails !== false);
+     const [bookNotifications, setBookNotifications] = useState(
+          user?.book_notifications !== false
+     );
      const [saving, setSaving] = useState(false);
      const [error, setError] = useState('');
      const [success, setSuccess] = useState('');
@@ -98,6 +101,8 @@ const Profile_Page = () => {
           const hasPostalCodeChange = billingPostalCode.trim() !== (user.billing_postal_code || '');
           const hasCountryChange = billingCountry.trim() !== (user.billing_country || 'India');
           const hasMarketingChange = marketingEmails !== (user.marketing_emails !== false);
+          const hasBookNotificationsChange =
+               bookNotifications !== (user.book_notifications !== false);
 
           const hasAddressChange =
                hasAddressLine1Change ||
@@ -107,7 +112,7 @@ const Profile_Page = () => {
                hasPostalCodeChange ||
                hasCountryChange;
 
-          if (!hasUsernameChange && !hasEmailChange && !hasPasswordChange && !hasAddressChange && !hasMarketingChange) {
+          if (!hasUsernameChange && !hasEmailChange && !hasPasswordChange && !hasAddressChange && !hasMarketingChange && !hasBookNotificationsChange) {
                setError('No changes to save');
                return;
           }
@@ -126,6 +131,7 @@ const Profile_Page = () => {
                     billing_postal_code?: string;
                     billing_country?: string;
                     marketing_emails?: boolean;
+                    book_notifications?: boolean;
                } = {};
 
                if (hasUsernameChange) {
@@ -157,6 +163,9 @@ const Profile_Page = () => {
                }
                if (hasMarketingChange) {
                     updatePayload.marketing_emails = marketingEmails;
+               }
+               if (hasBookNotificationsChange) {
+                    updatePayload.book_notifications = bookNotifications;
                }
 
                const result = await auth_api.update_profile(updatePayload);
@@ -194,6 +203,7 @@ const Profile_Page = () => {
           setBillingPostalCode(user.billing_postal_code || '');
           setBillingCountry(user.billing_country || 'India');
           setMarketingEmails(user.marketing_emails !== false);
+          setBookNotifications(user.book_notifications !== false);
           setError('');
           setSuccess('');
      };
@@ -421,6 +431,28 @@ const Profile_Page = () => {
                                              </span>
                                              <span className="profile_page__input_hint">
                                                   Login codes, password resets and purchase receipts are always sent.
+                                             </span>
+                                        </span>
+                                   </label>
+
+                                   <label
+                                        htmlFor="profile-book-notifications"
+                                        style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer', marginTop: '1rem' }}
+                                   >
+                                        <input
+                                             id="profile-book-notifications"
+                                             type="checkbox"
+                                             checked={bookNotifications}
+                                             onChange={(e) => setBookNotifications(e.target.checked)}
+                                             disabled={saving}
+                                             style={{ marginTop: '0.2rem' }}
+                                        />
+                                        <span>
+                                             <span className="profile_page__label" style={{ display: 'block' }}>
+                                                  Notify me when a new book is added
+                                             </span>
+                                             <span className="profile_page__input_hint">
+                                                  Turn this off to stop the "New book added" alerts.
                                              </span>
                                         </span>
                                    </label>

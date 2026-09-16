@@ -225,7 +225,7 @@ const Email_Updates_Page = () => {
           try {
                const automatic = await mailing_api.update_automatic({ [key]: value });
                setOverview((prev) => (prev ? { ...prev, automatic } : prev));
-               toast.success(value ? 'Emails switched on' : 'Emails switched off');
+               toast.success(value ? 'Switched on' : 'Switched off');
           } catch (err: any) {
                toast.error(errorMessage(err, 'Failed to update setting'));
           } finally {
@@ -289,10 +289,30 @@ const Email_Updates_Page = () => {
 
                {/* ── Automatic emails ─────────────────────────────────────── */}
                <section className="email_page__card">
-                    <h2 className="email_page__card_title">Automatic emails</h2>
+                    <h2 className="email_page__card_title">Automatic messages</h2>
                     <p className="email_page__card_desc">
-                         Uploading books never emails anyone. Login codes, password resets and purchase receipts are always sent.
+                         Login codes, password resets and purchase receipts are always sent.
                     </p>
+
+                    <div className="email_page__toggle_row">
+                         <div>
+                              <h3 className="email_page__toggle_label">New book alerts</h3>
+                              <p className="email_page__toggle_desc">
+                                   Sent to every reader when a book is uploaded. Turning this
+                                   off stops them for everyone; readers can also switch them
+                                   off individually in their profile.
+                              </p>
+                         </div>
+                         <label className="email_toggle">
+                              <input
+                                   type="checkbox"
+                                   checked={overview.automatic.new_book_notifications}
+                                   disabled={savingAutomatic !== null}
+                                   onChange={(e) => handleToggleAutomatic('new_book_notifications', e.target.checked)}
+                              />
+                              <span className="email_toggle__slider" />
+                         </label>
+                    </div>
 
                     <div className="email_page__toggle_row">
                          <div>
