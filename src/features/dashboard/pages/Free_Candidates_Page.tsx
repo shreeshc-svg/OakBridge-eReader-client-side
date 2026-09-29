@@ -10,6 +10,7 @@ import './Free_Candidates_Page.scss';
 const Free_Candidates_Page = () => {
      const accessToken = useAuthStore((state) => state.accessToken);
      const [candidates, setCandidates] = useState<FreeCandidate[]>([]);
+     const [deletingId, setDeletingId] = useState<string | null>(null);
      const [categories, setCategories] = useState<{ id: string; category_name: string }[]>([]);
      const [books, setBooks] = useState<Book[]>([]);
      
@@ -80,6 +81,27 @@ const Free_Candidates_Page = () => {
                setFormError(err.response?.data?.message || 'Error creating account.');
           } finally {
                setCreating(false);
+          }
+     };
+
+     const handleDeleteCandidate = async (cand: FreeCandidate) => {
+          const ok = window.confirm(
+               `Delete ${cand.username} (${cand.email})?\n\nThis removes the account along with its granted books, library, reading progress, notes and highlights. The books themselves are not affected. This cannot be undone.`
+          );
+          if (!ok) return;
+
+          setDeletingId(cand.id);
+          try {
+               const res = await free_candidates_api.delete_candidate(cand.id);
+               if (res.success) {
+                    setCandidates((prev) => prev.filter((c) => c.id !== cand.id));
+               } else {
+                    setError(res.message || 'Failed to delete candidate.');
+               }
+          } catch (err: any) {
+               setError(err.response?.data?.message || 'Error deleting candidate.');
+          } finally {
+               setDeletingId(null);
           }
      };
 
@@ -298,6 +320,17 @@ const Free_Candidates_Page = () => {
                                                                       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                                                                  </svg>
                                                                  <span>Manage Books</span>
+                                                            </button>
+                                                            <button
+                                                                 className="cand_page__action_btn cand_page__action_btn--danger"
+                                                                 onClick={() => handleDeleteCandidate(cand)}
+                                                                 disabled={deletingId === cand.id}
+                                                                 title="Delete Candidate"
+                                                            >
+                                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cand_page__action_icon">
+                                                                      <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+                                                                 </svg>
+                                                                 <span>{deletingId === cand.id ? 'Deleting...' : 'Delete'}</span>
                                                             </button>
                                                        </td>
                                                   </tr>
