@@ -505,7 +505,7 @@ const Book_Details_Page = () => {
                                                             setCurrentPreviewIndex(0);
                                                        }}
                                                   >
-                                                       Preview ({book.preview_pages.length} pages)
+                                                       Preview
                                                   </button>
                                              )}
                                         </>

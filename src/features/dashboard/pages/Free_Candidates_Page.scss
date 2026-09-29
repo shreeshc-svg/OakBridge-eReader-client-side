@@ -281,6 +281,23 @@
           }
      }
 
+     &__action_btn--danger {
+          margin-left: 8px;
+          color: #b91c1c;
+          border-color: rgba(185, 28, 28, 0.25);
+
+          &:hover {
+               border-color: #b91c1c;
+               color: #b91c1c;
+               background: rgba(185, 28, 28, 0.06);
+          }
+
+          &:disabled {
+               opacity: 0.6;
+               cursor: not-allowed;
+          }
+     }
+
      &__action_icon {
           width: 14px;
           height: 14px;

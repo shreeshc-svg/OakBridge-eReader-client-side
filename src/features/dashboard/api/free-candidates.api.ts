@@ -25,6 +25,10 @@ export const free_candidates_api = {
           const response = await apiClient.get<{ success: boolean; data: string[] }>(`/superadmin/free-candidates/${id}/allowed-books`);
           return response.data;
      },
+     delete_candidate: async (id: string) => {
+          const response = await apiClient.delete<{ success: boolean; message: string }>(`/superadmin/free-candidates/${id}`);
+          return response.data;
+     },
      update_allowed_books: async (id: string, bookIds: string[]) => {
           const response = await apiClient.post<{ success: boolean; message: string }>(`/superadmin/free-candidates/${id}/allowed-books`, { bookIds });
           return response.data;
