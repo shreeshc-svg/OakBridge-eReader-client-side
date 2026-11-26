@@ -33,6 +33,7 @@ import Contact_Messages_Page from './Contact_Messages_Page';
 import Ebooks_Page from './Ebooks_Page';
 import Coupons_Page from './Coupons_Page';
 import Email_Updates_Page from './Email_Updates_Page';
+import Customers_Page from './Customers_Page';
 import './Superadmin_Dashboard.scss';
 
 const getIcon = (item: string) => {
@@ -80,6 +81,10 @@ const getIcon = (item: string) => {
           case 'Institutions':
                return (
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2" /><line x1="9" y1="22" x2="9" y2="16" /><line x1="15" y1="22" x2="15" y2="16" /><line x1="9" y1="16" x2="15" y2="16" /><path d="M8 6h2v2H8V6zm4 0h2v2h-2V6zm4 0h2v2h-2V6zM8 10h2v2H8v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z" /></svg>
+               );
+          case 'Customers':
+               return (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
                );
           case 'Free Candidates':
                return (
@@ -202,6 +207,9 @@ const Superadmin_Dashboard = () => {
           if (!sidebarItems.includes('Subscriptions')) {
                sidebarItems.push('Subscriptions');
           }
+          if (!sidebarItems.includes('Customers')) {
+               sidebarItems.push('Customers');
+          }
           if (!sidebarItems.includes('Free Candidates')) {
                sidebarItems.push('Free Candidates');
           }
@@ -274,6 +282,10 @@ const Superadmin_Dashboard = () => {
 
           if (activeTab === 'Institutions' && role === 'SUPERADMIN') {
                return <Institutions_Page />;
+          }
+
+          if (activeTab === 'Customers' && role === 'SUPERADMIN') {
+               return <Customers_Page />;
           }
 
           if (activeTab === 'Free Candidates' && role === 'SUPERADMIN') {
