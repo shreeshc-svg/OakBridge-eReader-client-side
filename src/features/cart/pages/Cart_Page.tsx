@@ -312,6 +312,14 @@ const Cart_Page = () => {
                                              <span>₹{((subtotal - discountAmount) / 100).toLocaleString('en-IN')}</span>
                                         </div>
 
+                                        <p className="cart_summary__gst_note">
+                                             Inclusive of 5% GST (₹
+                                             {(
+                                                  Math.round(((subtotal - discountAmount) * 5) / 105) / 100
+                                             ).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                             )
+                                        </p>
+
                                         <button
                                              type="button"
                                              className="cart_btn cart_btn--primary cart_btn--full"
