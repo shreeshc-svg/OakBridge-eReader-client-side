@@ -424,6 +424,15 @@ const Book_Details_Page = () => {
                                    </div>
                               )}
 
+                              {!isBookFreeForUser && book.price > 0 && (
+                                   <div className="bd_price_block">
+                                        <span className="bd_price">
+                                             ₹{(book.price / 100).toLocaleString('en-IN')}
+                                        </span>
+                                        <span className="bd_price_note">Inclusive of 5% GST</span>
+                                   </div>
+                              )}
+
                               {/* Actions Container */}
                               <div className="bd_actions_container">
                                    {(book.file_url || isSet) && isBookInLibrary ? (
@@ -462,7 +471,7 @@ const Book_Details_Page = () => {
                                                   onClick={handleLibraryAction}
                                                   disabled={libraryLoading || paymentProcessing}
                                              >
-                                                  {libraryLoading || paymentProcessing ? '...' : (isBookFreeForUser ? 'Add to Library' : `Buy for ₹${book.price / 100}`)}
+                                                  {libraryLoading || paymentProcessing ? '...' : (isBookFreeForUser ? 'Add to Library' : `Buy for ₹${(book.price / 100).toLocaleString('en-IN')}`)}
                                              </button>
 
                                              {/* Add to Cart button for paid books */}

@@ -774,3 +774,24 @@
           flex-wrap: wrap;
      }
 }
+
+/* ── Price with GST note ─────────────────────────────────────────────── */
+.bd_price_block {
+     display: flex;
+     align-items: baseline;
+     gap: 10px;
+     flex-wrap: wrap;
+     margin: 18px 0 4px;
+}
+
+.bd_price {
+     font-size: 26px;
+     font-weight: 800;
+     letter-spacing: -0.01em;
+}
+
+.bd_price_note {
+     font-size: 12px;
+     font-weight: 600;
+     opacity: 0.6;
+}

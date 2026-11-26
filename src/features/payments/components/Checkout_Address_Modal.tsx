@@ -299,6 +299,10 @@ const Checkout_Address_Modal: React.FC<CheckoutAddressModalProps> = ({
                                    Proceed to Payment
                               </button>
                          </div>
+
+                         <p className="checkout_address_modal__gst_note">
+                              All prices are inclusive of 5% GST.
+                         </p>
                     </form>
                </div>
           </div>
